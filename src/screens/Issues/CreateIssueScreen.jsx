@@ -1,6 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  useFrameProcessor,
+  runAtTargetFps,
   useCameraPermission,
   useCameraDevice,
   Camera,
@@ -9,10 +11,20 @@ import CameraButton from '../../components/UI/CameraButton';
 import Button from '../../components/UI/Button';
 import ThubnailStack from '../../components/Images/ThubnailStack';
 import ImagePicker from '../../components/Images/ImagePicker';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import AiOutputModal from '../../components/Issue/AiOutputModal';
 
 const CreateIssueScreen = () => {
+  const isFocused = useIsFocused();
+  const frameProcessor = useFrameProcessor(frame => {
+    'worklet';
+    runAtTargetFps(1, () => {
+      console.log(
+        `Frame: ${frame.width}x${frame.height} (${frame.pixelFormat})`,
+      );
+    });
+  }, []);
+
   const navigation = useNavigation();
   const [capturedPhotos, setCapturedPhotos] = useState([]);
   const { hasPermission, requestPermission } = useCameraPermission();
@@ -96,8 +108,10 @@ const CreateIssueScreen = () => {
         ref={camera}
         style={StyleSheet.absoluteFill}
         device={device}
-        isActive={true}
+        isActive={isFocused}
         photo={true}
+        frameProcessor={frameProcessor}
+        pixelFormat="yuv"
       />
 
       <View style={styles.topOverlay}>
