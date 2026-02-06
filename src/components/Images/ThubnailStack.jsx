@@ -1,12 +1,16 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
+import { useState } from 'react';
+import ImageModal from './ImageModal';
 
 const ThubnailStack = props => {
+  const [visible, setVisible] = useState(false);
   return (
     <TouchableOpacity
       style={styles.thumbnailContainer}
       onPress={() => {
-        console.log('yalla');
+        setVisible(true);
+        // console.log('yalla');
       }}
     >
       {props.photos.length > 0 && (
@@ -37,6 +41,11 @@ const ThubnailStack = props => {
           ))}
         </View>
       )}
+      <ImageModal
+        visible={visible}
+        images={props.photos}
+        onClose={() => setVisible(false)}
+      />
     </TouchableOpacity>
   );
 };

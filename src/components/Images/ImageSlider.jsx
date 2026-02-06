@@ -6,9 +6,9 @@ import {
   StyleSheet,
   Dimensions,
   Pressable,
-  Modal,
 } from 'react-native';
 import COLORS from '../../utils/constants';
+import ImageModal from './ImageModal';
 
 const { width, height } = Dimensions.get('window');
 
@@ -56,30 +56,12 @@ const ImageSlider = ({ images = [] }) => {
           ))}
         </View>
       </View>
-      <Modal visible={previewVisible} transparent>
-        <View style={styles.modalContainer}>
-          <FlatList
-            data={images}
-            horizontal
-            pagingEnabled
-            initialScrollIndex={activeIndex}
-            keyExtractor={(_, index) => index.toString()}
-            getItemLayout={(_, index) => ({
-              length: width,
-              offset: width * index,
-              index,
-            })}
-            renderItem={({ item }) => (
-              <Pressable
-                style={styles.fullScreenWrapper}
-                onPress={() => setPreviewVisible(false)}
-              >
-                <Image source={{ uri: item }} style={styles.fullImage} />
-              </Pressable>
-            )}
-          />
-        </View>
-      </Modal>
+      <ImageModal
+        visible={previewVisible}
+        onClose={() => setPreviewVisible(false)}
+        images={images}
+        initialIndex={activeIndex}
+      />
     </>
   );
 };

@@ -27,6 +27,7 @@ const CreateIssueScreen = () => {
 
   const navigation = useNavigation();
   const [capturedPhotos, setCapturedPhotos] = useState([]);
+  const [imageEdits, setImageEdits] = useState([]);
   const { hasPermission, requestPermission } = useCameraPermission();
   const device = useCameraDevice('back');
   const camera = useRef(null);
@@ -40,6 +41,7 @@ const CreateIssueScreen = () => {
     category: '',
     status: '',
     images: [],
+    edits: [],
     location: '',
     reported: '',
   });
@@ -52,6 +54,9 @@ const CreateIssueScreen = () => {
       requestPermission();
     }
   }, [hasPermission, requestPermission]);
+  useEffect(() => {
+    console.log(imageEdits);
+  }, [imageEdits]);
 
   const takePhoto = async () => {
     try {
@@ -61,6 +66,7 @@ const CreateIssueScreen = () => {
 
       if (!photo?.path) return;
       setCapturedPhotos(prev => [...prev, `file://${photo.path}`]);
+      setImageEdits(prev => [...prev, []]);
       console.log(capturedPhotos);
     } catch (error) {
       console.error('Error capturing photo:', error);
@@ -69,7 +75,11 @@ const CreateIssueScreen = () => {
 
   const submitIssueHandler = () => {
     if (!canSubmit) return;
-    setNewItem(prev => ({ ...prev, images: capturedPhotos }));
+    setNewItem(prev => ({
+      ...prev,
+      images: capturedPhotos,
+      edits: imageEdits,
+    }));
     setStartAnalyze(true);
     console.log('Submitting photos:', capturedPhotos);
   };
@@ -78,6 +88,7 @@ const CreateIssueScreen = () => {
     const updatedItem = {
       ...newItem,
       images: capturedPhotos,
+      edits: imageEdits,
       title: data.title,
       category: data.category,
       description: data.description,
@@ -90,6 +101,7 @@ const CreateIssueScreen = () => {
     const updatedItem = {
       ...newItem,
       images: capturedPhotos,
+      edits: imageEdits,
     };
 
     setNewItem(updatedItem);
@@ -128,9 +140,10 @@ const CreateIssueScreen = () => {
         </View>
 
         <ImagePicker
-          onPick={newPhotos =>
-            setCapturedPhotos(prev => [...prev, ...newPhotos])
-          }
+          onPick={newPhotos => {
+            setCapturedPhotos(prev => [...prev, ...newPhotos]);
+            setImageEdits(prev => [...prev, []]);
+          }}
           maxPhotos={MAX_PHOTOS}
           currentCount={capturedPhotos.length}
         />
