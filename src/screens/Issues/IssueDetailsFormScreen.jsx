@@ -9,6 +9,7 @@ import ImageSlider from '../../components/Images/ImageSlider';
 import { useDispatch } from 'react-redux';
 import { addIssue, updateIssue } from '../../store/slices/IssueSlice';
 import { useNavigation } from '@react-navigation/native';
+
 const IssueSchema = Yup.object().shape({
   title: Yup.string().required('Title is required'),
   description: Yup.string().required('Description is required'),
@@ -22,15 +23,18 @@ const IssueDetailsFormScreen = props => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const { item = {} } = props.route.params || {};
+  console.log(item.edits);
   const submitHandler = values => {
     dispatch(addIssue(values));
     navigation.navigate('Issues');
   };
+
   const updateHandler = values => {
     dispatch(updateIssue({ id: item.id, data: values }));
     console.log('updated');
     navigation.navigate('Issues');
   };
+
   return (
     <Formik
       enableReinitialize
@@ -42,6 +46,7 @@ const IssueDetailsFormScreen = props => {
         location: item.location || '',
         reported: item.reported || '',
         images: item.images || [],
+        edits: item.edits || [], // Add edits to form values
       }}
       validationSchema={IssueSchema}
       onSubmit={values => {
@@ -59,7 +64,17 @@ const IssueDetailsFormScreen = props => {
         setFieldValue,
       }) => (
         <ScrollView style={styles.container}>
-          <ImageSlider images={values.images} />
+          {/* Pass both images and edits to ImageSlider */}
+          <ImageSlider
+            images={values.images}
+            edits={values.edits}
+            onEditChange={(index, newPaths) => {
+              const updated = [...values.edits];
+              updated[index] = newPaths;
+              setFieldValue('edits', updated);
+            }}
+          />
+
           <View style={styles.field}>
             <Text style={styles.label}>Title</Text>
             <TextInput
@@ -74,6 +89,7 @@ const IssueDetailsFormScreen = props => {
               <Text style={styles.error}>{errors.title}</Text>
             )}
           </View>
+
           <View style={styles.field}>
             <Text style={styles.label}>Description</Text>
             <TextInput
@@ -89,6 +105,7 @@ const IssueDetailsFormScreen = props => {
               <Text style={styles.error}>{errors.description}</Text>
             )}
           </View>
+
           <View style={styles.field}>
             <Text style={styles.label}>Status</Text>
             <View style={styles.pickerWrapper}>
@@ -166,6 +183,7 @@ const IssueDetailsFormScreen = props => {
               <Text style={styles.error}>{errors.location}</Text>
             )}
           </View>
+
           <View style={styles.field}>
             <Text style={styles.label}>Reported By</Text>
             <TextInput
@@ -180,6 +198,7 @@ const IssueDetailsFormScreen = props => {
               <Text style={styles.error}>{errors.reported}</Text>
             )}
           </View>
+
           {!item.id && <Button title="Submit Issue" onPress={handleSubmit} />}
           {item.id && <Button title="Update Issue" onPress={handleSubmit} />}
           <View style={{ margin: 20 }}></View>

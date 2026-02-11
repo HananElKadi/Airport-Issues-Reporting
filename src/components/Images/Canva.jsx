@@ -8,33 +8,40 @@ import {
 } from '@shopify/react-native-skia';
 import { Dimensions } from 'react-native';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
-import { useSharedValue, runOnJS } from 'react-native-reanimated';
+import {
+  useSharedValue,
+  runOnJS,
+  useDerivedValue,
+} from 'react-native-reanimated';
 import LoadingSpinner from '../UI/LoadingSpinner';
-import { useState } from 'react';
+
 const { width, height } = Dimensions.get('window');
 
-const Canva = ({ image: imageUri, isEditing }) => {
-  const [paths, setPaths] = useState([]);
+const Canva = ({ image: imageUri, isEditing, paths = [], onNewPath }) => {
+  const currentPathString = useSharedValue('');
 
-  const path = useSharedValue(Skia.Path.Make());
-  const addPath = finishedPath => {
-    setPaths(prev => [...prev, finishedPath]);
-  };
+  const animatedPath = useDerivedValue(() => {
+    if (!currentPathString.value) return Skia.Path.Make();
+    return Skia.Path.MakeFromSVGString(currentPathString.value);
+  });
+
+  const processedPaths = paths
+    .map(svgString => Skia.Path.MakeFromSVGString(svgString))
+    .filter(Boolean);
+
   const panGesture = Gesture.Pan()
     .enabled(isEditing)
     .onBegin(event => {
-      const newPath = Skia.Path.Make();
-      newPath.moveTo(event.x, event.y);
-      path.value = newPath;
+      currentPathString.value = `M ${event.x} ${event.y}`;
     })
     .onUpdate(event => {
-      const newPath = path.value.copy();
-      newPath.lineTo(event.x, event.y);
-      path.value = newPath;
+      currentPathString.value += ` L ${event.x} ${event.y}`;
     })
     .onEnd(() => {
-      runOnJS(addPath)(path.value);
-      path.value = Skia.Path.Make();
+      if (onNewPath && currentPathString.value) {
+        runOnJS(onNewPath)(currentPathString.value);
+      }
+      currentPathString.value = '';
     });
 
   const image = useImage(imageUri);
@@ -58,7 +65,7 @@ const Canva = ({ image: imageUri, isEditing }) => {
           height={height}
           fit="contain"
         />
-        {paths.map((p, index) => (
+        {processedPaths.map((p, index) => (
           <Path
             key={index}
             path={p}
@@ -67,9 +74,7 @@ const Canva = ({ image: imageUri, isEditing }) => {
             strokeWidth={4}
           />
         ))}
-        {path && (
-          <Path path={path} color="cyan" style="stroke" strokeWidth={4} />
-        )}
+        <Path path={animatedPath} color="red" style="stroke" strokeWidth={4} />
       </Canvas>
     </GestureDetector>
   );

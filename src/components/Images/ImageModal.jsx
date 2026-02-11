@@ -12,65 +12,87 @@ import COLORS from '../../utils/constants';
 import Canva from './Canva';
 const { width, height } = Dimensions.get('window');
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { useState } from 'react';
-const ImageModal = ({ visible, onClose, images = [], initialIndex = 0 }) => {
+import { useState, useRef } from 'react';
+const ImageModal = ({
+  visible,
+  onClose,
+  images = [],
+  edits = [],
+  onEditChange,
+  initialIndex = 0,
+}) => {
   const [isEditing, setIsEditing] = useState(false);
-
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  const flatListRef = useRef(null);
   const handleEditPress = () => {
     setIsEditing(true);
   };
-
   const handleFinishPress = () => {
     setIsEditing(false);
   };
+  const handleScroll = event => {
+    const offsetX = event.nativeEvent.contentOffset.x;
+    const index = Math.round(offsetX / width);
+    setCurrentIndex(index);
+  };
+  const handleNewPath = (imageIndex, newPath) => {
+    // Get current paths for this image
+    const currentPaths = edits[imageIndex] || [];
+    // Add the new path
+    const updatedPaths = [...currentPaths, newPath];
+    // Update the parent state
+    if (onEditChange) {
+      onEditChange(imageIndex, updatedPaths);
+    }
+  };
   return (
     <Modal visible={visible} transparent animationType="fade">
-      <GestureHandlerRootView>
-        <View style={styles.modalContainer}>
-          <Pressable style={styles.closeButton} onPress={onClose}>
-            <Text style={styles.closeIcon}>✕</Text>
+      <GestureHandlerRootView style={styles.modalContainer}>
+        <Pressable style={styles.closeButton} onPress={onClose}>
+          <Text style={styles.closeIcon}>✕</Text>
+        </Pressable>
+        {isEditing ? (
+          <Pressable style={styles.finishButton} onPress={handleFinishPress}>
+            <Text style={styles.buttonIcon}>✓</Text>
           </Pressable>
-
-          {isEditing ? (
-            <Pressable style={styles.finishButton} onPress={handleFinishPress}>
-              <Text style={styles.buttonIcon}>✓</Text>
-            </Pressable>
-          ) : (
-            <Pressable style={styles.editButton} onPress={handleEditPress}>
-              <Text style={styles.buttonIcon}>🖌️</Text>
-            </Pressable>
+        ) : (
+          <Pressable style={styles.editButton} onPress={handleEditPress}>
+            <Text style={styles.buttonIcon}>🖌️</Text>
+          </Pressable>
+        )}
+        <FlatList
+          ref={flatListRef}
+          data={images}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          initialScrollIndex={initialIndex}
+          keyExtractor={(_, index) => index.toString()}
+          onScroll={handleScroll}
+          scrollEventThrottle={16}
+          getItemLayout={(_, index) => ({
+            length: width,
+            offset: width * index,
+            index,
+          })}
+          renderItem={({ item, index }) => (
+            <View style={styles.imageWrapper}>
+              <Canva
+                image={item}
+                isEditing={isEditing}
+                paths={edits[index] || []}
+                onNewPath={newPath => handleNewPath(index, newPath)}
+              />
+            </View>
           )}
-
-          <FlatList
-            data={images}
-            horizontal
-            pagingEnabled
-            initialScrollIndex={initialIndex}
-            keyExtractor={(_, index) => index.toString()}
-            getItemLayout={(_, index) => ({
-              length: width,
-              offset: width * index,
-              index,
-            })}
-            renderItem={({ item }) => (
-              <View style={styles.imageWrapper}>
-                <Canva image={item} isEditing={isEditing} />
-              </View>
-            )}
-          />
-        </View>
+        />
       </GestureHandlerRootView>
     </Modal>
   );
 };
 export default ImageModal;
-
 const styles = StyleSheet.create({
-  modalContainer: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-  },
-
+  modalContainer: { flex: 1, backgroundColor: COLORS.background },
   closeButton: {
     position: 'absolute',
     top: 50,
@@ -109,24 +131,15 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(76, 175, 80, 0.8)', // Green background for finish
+    backgroundColor: 'rgba(76, 175, 80, 0.8)',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  buttonIcon: {
-    fontSize: 20,
-  },
-
+  buttonIcon: { fontSize: 20 },
   imageWrapper: {
     width,
     height,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-
-  fullImage: {
-    width,
-    height,
-    resizeMode: 'contain',
   },
 });

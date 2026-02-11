@@ -3,7 +3,7 @@ import React from 'react';
 import { useState } from 'react';
 import ImageModal from './ImageModal';
 
-const ThubnailStack = props => {
+const ThubnailStack = ({ photos, edits, onEditChange }) => {
   const [visible, setVisible] = useState(false);
   return (
     <TouchableOpacity
@@ -13,15 +13,15 @@ const ThubnailStack = props => {
         // console.log('yalla');
       }}
     >
-      {props.photos.length > 0 && (
+      {photos.length > 0 && (
         <View style={styles.thumbnailStack}>
-          {props.photos.slice(0, 3).map((photo, index) => (
+          {photos.slice(0, 3).map((photo, index) => (
             <View
               key={index}
               style={[
                 styles.thumbnail,
                 {
-                  zIndex: props.photos.length - index,
+                  zIndex: photos.length - index,
                   transform: [
                     { translateX: index * 8 },
                     { rotate: `${index * 3}deg` },
@@ -30,10 +30,10 @@ const ThubnailStack = props => {
               ]}
             >
               <Image source={{ uri: photo }} style={styles.thumbnailImage} />
-              {index === 0 && props.photos.length > 3 && (
+              {index === 0 && photos.length > 3 && (
                 <View style={styles.morePhotosOverlay}>
                   <Text style={styles.morePhotosText}>
-                    +{props.photos.length - 3}
+                    +{photos.length - 3}
                   </Text>
                 </View>
               )}
@@ -43,7 +43,9 @@ const ThubnailStack = props => {
       )}
       <ImageModal
         visible={visible}
-        images={props.photos}
+        images={photos}
+        edits={edits}
+        onEditChange={onEditChange}
         onClose={() => setVisible(false)}
       />
     </TouchableOpacity>

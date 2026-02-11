@@ -2,17 +2,17 @@ import React, { useRef, useState } from 'react';
 import {
   View,
   FlatList,
-  Image,
   StyleSheet,
   Dimensions,
   Pressable,
 } from 'react-native';
 import COLORS from '../../utils/constants';
 import ImageModal from './ImageModal';
+import ImageWithEditsPreview from './ImageWithEditsPreview';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
-const ImageSlider = ({ images = [] }) => {
+const ImageSlider = ({ images = [], edits = [], onEditChange }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [previewVisible, setPreviewVisible] = useState(false);
 
@@ -43,7 +43,11 @@ const ImageSlider = ({ images = [] }) => {
                 setActiveIndex(index);
               }}
             >
-              <Image source={{ uri: item }} style={styles.image} />
+              <ImageWithEditsPreview
+                imageUri={item}
+                paths={edits[index] || []}
+                style={styles.image}
+              />
             </Pressable>
           )}
         />
@@ -56,10 +60,13 @@ const ImageSlider = ({ images = [] }) => {
           ))}
         </View>
       </View>
+
       <ImageModal
         visible={previewVisible}
         onClose={() => setPreviewVisible(false)}
         images={images}
+        edits={edits}
+        onEditChange={onEditChange}
         initialIndex={activeIndex}
       />
     </>
@@ -72,7 +79,6 @@ const styles = StyleSheet.create({
   image: {
     width,
     height: 220,
-    resizeMode: 'cover',
   },
 
   dotsContainer: {
@@ -92,21 +98,5 @@ const styles = StyleSheet.create({
   activeDot: {
     backgroundColor: COLORS.primary,
     width: 10,
-  },
-  modalContainer: {
-    flex: 1,
-    backgroundColor: 'black',
-  },
-
-  fullScreenWrapper: {
-    width,
-    height,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  fullImage: {
-    width,
-    height,
-    resizeMode: 'contain',
   },
 });

@@ -16,14 +16,14 @@ import AiOutputModal from '../../components/Issue/AiOutputModal';
 
 const CreateIssueScreen = () => {
   const isFocused = useIsFocused();
-  const frameProcessor = useFrameProcessor(frame => {
-    'worklet';
-    runAtTargetFps(1, () => {
-      console.log(
-        `Frame: ${frame.width}x${frame.height} (${frame.pixelFormat})`,
-      );
-    });
-  }, []);
+  // const frameProcessor = useFrameProcessor(frame => {
+  //   'worklet';
+  //   runAtTargetFps(1, () => {
+  //     console.log(
+  //       `Frame: ${frame.width}x${frame.height} (${frame.pixelFormat})`,
+  //     );
+  //   });
+  // }, []);
 
   const navigation = useNavigation();
   const [capturedPhotos, setCapturedPhotos] = useState([]);
@@ -45,6 +45,15 @@ const CreateIssueScreen = () => {
     location: '',
     reported: '',
   });
+
+  const onEditChange = (index, newPaths) => {
+    setImageEdits(prev => {
+      const updated = [...prev];
+      updated[index] = newPaths;
+      return updated;
+    });
+    console.log('tam l edit ', imageEdits);
+  };
 
   const [startAnalyze, setStartAnalyze] = useState(false);
 
@@ -122,8 +131,8 @@ const CreateIssueScreen = () => {
         device={device}
         isActive={isFocused}
         photo={true}
-        frameProcessor={frameProcessor}
-        pixelFormat="yuv"
+        // frameProcessor={frameProcessor}
+        // pixelFormat="yuv"
       />
 
       <View style={styles.topOverlay}>
@@ -133,7 +142,11 @@ const CreateIssueScreen = () => {
       </View>
 
       <View style={styles.bottomOverlay}>
-        <ThubnailStack photos={capturedPhotos} />
+        <ThubnailStack
+          photos={capturedPhotos}
+          edits={imageEdits}
+          onEditChange={onEditChange}
+        />
 
         <View style={styles.captureWrapper}>
           {canTakePhoto && <CameraButton onPress={takePhoto} />}
