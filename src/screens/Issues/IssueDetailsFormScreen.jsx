@@ -41,7 +41,7 @@ const IssueDetailsFormScreen = props => {
       initialValues={{
         title: item.title || '',
         description: item.description || '',
-        status: item.status || '',
+        status: item.status || 'Open',
         category: item.category || '',
         location: item.location || '',
         reported: item.reported || '',
@@ -113,7 +113,6 @@ const IssueDetailsFormScreen = props => {
                 selectedValue={values.status}
                 onValueChange={value => setFieldValue('status', value)}
               >
-                <Picker.Item label="Select status" value="" />
                 <Picker.Item label="Open" value="Open" />
                 <Picker.Item label="In Progress" value="In-Progress" />
                 <Picker.Item label="Resolved" value="Resolved" />

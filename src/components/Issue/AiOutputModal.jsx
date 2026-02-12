@@ -4,6 +4,7 @@ import Button from '../UI/Button';
 import ErrorModal from '../UI/ErrorModal';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import uploadImage from '../../services/aiReasonningApi';
+import { loadData } from '@shopify/react-native-skia';
 
 const AiOutputModal = ({ visible, onAccept, onReject, images }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -23,20 +24,20 @@ const AiOutputModal = ({ visible, onAccept, onReject, images }) => {
     }
   };
 
-  const getDataFromAi = async () => {
-    try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
+  // const getDataFromAi = async () => {
+  //   try {
+  //     await new Promise(resolve => setTimeout(resolve, 1500));
 
-      return {
-        title: 'Broken Escalator',
-        category: 'Safety',
-        description:
-          'The escalator near Gate A3 is not working and causing congestion.',
-      };
-    } catch (err) {
-      throw new Error('Failed to analyze images');
-    }
-  };
+  //     return {
+  //       title: 'Broken Escalator',
+  //       category: 'Safety',
+  //       description:
+  //         'The escalator near Gate A3 is not working and causing congestion.',
+  //     };
+  //   } catch (err) {
+  //     throw new Error('Failed to analyze images');
+  //   }
+  // };
 
   // ===== Effects =====
 
@@ -44,27 +45,13 @@ const AiOutputModal = ({ visible, onAccept, onReject, images }) => {
     if (!images || images.length === 0) return;
 
     const handleUpload = async () => {
-      try {
-        await uploadImages(images);
-      } catch (err) {
-        setError(err.message);
-      }
-    };
-
-    handleUpload();
-  }, [images]);
-
-  useEffect(() => {
-    if (!visible) return;
-
-    const fetchData = async () => {
       setIsLoading(true);
       setError(null);
       setData(null);
-
       try {
-        const result = await getDataFromAi();
-        setData(result);
+        const res = await uploadImages(images);
+        setData(res.analysis);
+        console.log(res);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -72,8 +59,29 @@ const AiOutputModal = ({ visible, onAccept, onReject, images }) => {
       }
     };
 
-    fetchData();
-  }, [visible]);
+    handleUpload();
+  }, [images]);
+
+  // useEffect(() => {
+  //   if (!visible) return;
+
+  //   const fetchData = async () => {
+  //     setIsLoading(true);
+  //     setError(null);
+  //     setData(null);
+
+  //     // try {
+  //     //   const result = await getDataFromAi();
+  //     //   setData(result);
+  //     // } catch (err) {
+  //     //   setError(err.message);
+  //     // } finally {
+  //     //   setIsLoading(false);
+  //     // }
+  //   };
+
+  //   fetchData();
+  // }, [visible]);
 
   if (isLoading) {
     return <LoadingSpinner message="Analyzing Images..." />;
