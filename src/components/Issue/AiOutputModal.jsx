@@ -3,15 +3,28 @@ import React, { useEffect, useState } from 'react';
 import Button from '../UI/Button';
 import ErrorModal from '../UI/ErrorModal';
 import LoadingSpinner from '../UI/LoadingSpinner';
+import uploadImage from '../../services/aiReasonningApi';
 
-const AiOutputModal = ({ visible, onAccept, onReject }) => {
+const AiOutputModal = ({ visible, onAccept, onReject, images }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
 
-  async function getDataFromAi() {
+  // ===== Data Fetching Functions =====
+
+  const uploadImages = async images => {
     try {
-      // simulate AI processing
+      const result = await uploadImage(images);
+      console.log('Upload successful:', result);
+      return result;
+    } catch (error) {
+      console.error('Upload failed:', error);
+      throw error;
+    }
+  };
+
+  const getDataFromAi = async () => {
+    try {
       await new Promise(resolve => setTimeout(resolve, 1500));
 
       return {
@@ -23,14 +36,31 @@ const AiOutputModal = ({ visible, onAccept, onReject }) => {
     } catch (err) {
       throw new Error('Failed to analyze images');
     }
-  }
+  };
+
+  // ===== Effects =====
+
+  useEffect(() => {
+    if (!images || images.length === 0) return;
+
+    const handleUpload = async () => {
+      try {
+        await uploadImages(images);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    handleUpload();
+  }, [images]);
 
   useEffect(() => {
     if (!visible) return;
 
-    async function fetchData() {
+    const fetchData = async () => {
       setIsLoading(true);
       setError(null);
+      setData(null);
 
       try {
         const result = await getDataFromAi();
@@ -40,7 +70,7 @@ const AiOutputModal = ({ visible, onAccept, onReject }) => {
       } finally {
         setIsLoading(false);
       }
-    }
+    };
 
     fetchData();
   }, [visible]);
@@ -56,27 +86,15 @@ const AiOutputModal = ({ visible, onAccept, onReject }) => {
   if (!data) {
     return null;
   }
-
   return (
     <Modal visible={visible} transparent animationType="fade">
       <View style={styles.backdrop}>
         <View style={styles.modalContainer}>
           <Text style={styles.heading}>AI Analysis Result</Text>
 
-          <View style={styles.field}>
-            <Text style={styles.label}>Title</Text>
-            <Text style={styles.value}>{data.title}</Text>
-          </View>
-
-          <View style={styles.field}>
-            <Text style={styles.label}>Category</Text>
-            <Text style={styles.value}>{data.category}</Text>
-          </View>
-
-          <View style={styles.field}>
-            <Text style={styles.label}>Description</Text>
-            <Text style={styles.value}>{data.description}</Text>
-          </View>
+          <DataField label="Title" value={data.title} />
+          <DataField label="Category" value={data.category} />
+          <DataField label="Description" value={data.description} />
 
           <View style={styles.actions}>
             <Button
@@ -96,7 +114,12 @@ const AiOutputModal = ({ visible, onAccept, onReject }) => {
   );
 };
 
-export default AiOutputModal;
+const DataField = ({ label, value }) => (
+  <View style={styles.field}>
+    <Text style={styles.label}>{label}</Text>
+    <Text style={styles.value}>{value}</Text>
+  </View>
+);
 
 const styles = StyleSheet.create({
   backdrop: {
@@ -105,7 +128,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
   modalContainer: {
     width: '90%',
     backgroundColor: '#fff',
@@ -117,7 +139,6 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 4 },
   },
-
   heading: {
     fontSize: 18,
     fontWeight: '600',
@@ -125,37 +146,33 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     color: '#111',
   },
-
   field: {
     marginBottom: 12,
   },
-
   label: {
     fontSize: 13,
     fontWeight: '500',
     color: '#666',
     marginBottom: 4,
   },
-
   value: {
     fontSize: 15,
     color: '#222',
     lineHeight: 20,
   },
-
   actions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 20,
   },
-
   rejectBtn: {
     flex: 1,
     marginRight: 8,
   },
-
   acceptBtn: {
     flex: 1,
     marginLeft: 8,
   },
 });
+
+export default AiOutputModal;

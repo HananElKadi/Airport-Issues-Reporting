@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  useFrameProcessor,
-  runAtTargetFps,
+  // useFrameProcessor,
+  // runAtTargetFps,
   useCameraPermission,
   useCameraDevice,
   Camera,
@@ -171,6 +171,7 @@ const CreateIssueScreen = () => {
         </View>
         {startAnalyze && (
           <AiOutputModal
+            images={capturedPhotos}
             visible={startAnalyze}
             onReject={rejectAiOutputHandler}
             onAccept={acceptAiOutputHandler}
