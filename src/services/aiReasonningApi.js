@@ -7,7 +7,7 @@ async function uploadImages(photos) {
   photos.forEach((photoUri, index) => {
     console.log(photoUri);
 
-    formData.append('files', {
+    formData.append('images', {
       uri: photoUri,
       type: 'image/jpeg',
       name: `photo_${index}.jpg`,
@@ -15,7 +15,7 @@ async function uploadImages(photos) {
   });
 
   try {
-    const res = await fetch(`${SERVER_URL}/upload-multiple-image`, {
+    const res = await fetch(`${SERVER_URL}/analyze-images`, {
       method: 'POST',
       body: formData,
     });

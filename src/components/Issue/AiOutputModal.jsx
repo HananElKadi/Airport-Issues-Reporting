@@ -50,7 +50,7 @@ const AiOutputModal = ({ visible, onAccept, onReject, images }) => {
       setData(null);
       try {
         const res = await uploadImages(images);
-        setData(res.analysis);
+        setData(res);
         console.log(res);
       } catch (err) {
         setError(err.message);
