@@ -22,8 +22,7 @@ const IssueSchema = Yup.object().shape({
 const IssueDetailsFormScreen = props => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const { item = {} } = props.route.params || {};
-  console.log(item.edits);
+  const { item = {}, readOnly = false } = props.route.params || {};
   const submitHandler = values => {
     dispatch(addIssue(values));
     navigation.navigate('Issues');
@@ -46,7 +45,6 @@ const IssueDetailsFormScreen = props => {
         location: item.location || '',
         reported: item.reported || '',
         images: item.images || [],
-        edits: item.edits || [], // Add edits to form values
       }}
       validationSchema={IssueSchema}
       onSubmit={values => {
@@ -67,11 +65,11 @@ const IssueDetailsFormScreen = props => {
           {/* Pass both images and edits to ImageSlider */}
           <ImageSlider
             images={values.images}
-            edits={values.edits}
-            onEditChange={(index, newPaths) => {
-              const updated = [...values.edits];
-              updated[index] = newPaths;
-              setFieldValue('edits', updated);
+            readOnly={readOnly}
+            onImageEdited={(index, newImagePath) => {
+              const updatedImages = [...values.images];
+              updatedImages[index] = newImagePath;
+              setFieldValue('images', updatedImages);
             }}
           />
 
@@ -84,8 +82,9 @@ const IssueDetailsFormScreen = props => {
               value={values.title}
               placeholder="Enter title"
               placeholderTextColor={COLORS.placeholder}
+              editable={!readOnly}
             />
-            {errors.title && touched.title && (
+            {errors.title && touched.title && !readOnly && (
               <Text style={styles.error}>{errors.title}</Text>
             )}
           </View>
@@ -100,8 +99,9 @@ const IssueDetailsFormScreen = props => {
               placeholder="Describe the issue"
               placeholderTextColor={COLORS.placeholder}
               multiline
+              editable={!readOnly}
             />
-            {errors.description && touched.description && (
+            {errors.description && touched.description && !readOnly && (
               <Text style={styles.error}>{errors.description}</Text>
             )}
           </View>
@@ -112,6 +112,7 @@ const IssueDetailsFormScreen = props => {
               <Picker
                 selectedValue={values.status}
                 onValueChange={value => setFieldValue('status', value)}
+                enabled={!readOnly}
               >
                 <Picker.Item label="Open" value="Open" />
                 <Picker.Item label="In Progress" value="In-Progress" />
@@ -129,6 +130,7 @@ const IssueDetailsFormScreen = props => {
               <Picker
                 selectedValue={values.category}
                 onValueChange={value => setFieldValue('category', value)}
+                enabled={!readOnly}
               >
                 <Picker.Item label="Select category" value="" />
                 <Picker.Item label="Electrical" value="Electrical" />
@@ -150,6 +152,7 @@ const IssueDetailsFormScreen = props => {
               <Picker
                 selectedValue={values.location}
                 onValueChange={value => setFieldValue('location', value)}
+                enabled={!readOnly}
               >
                 <Picker.Item label="Select location" value="" />
                 <Picker.Item
@@ -192,6 +195,7 @@ const IssueDetailsFormScreen = props => {
               value={values.reported}
               placeholder="Reporter name"
               placeholderTextColor={COLORS.placeholder}
+              editable={!readOnly}
             />
             {errors.reported && touched.reported && (
               <Text style={styles.error}>{errors.reported}</Text>
@@ -199,7 +203,7 @@ const IssueDetailsFormScreen = props => {
           </View>
 
           {!item.id && <Button title="Submit Issue" onPress={handleSubmit} />}
-          {item.id && <Button title="Update Issue" onPress={handleSubmit} />}
+          {/* {item.id && <Button title="Update Issue" onPress={handleSubmit} />} */}
           <View style={{ margin: 20 }}></View>
         </ScrollView>
       )}

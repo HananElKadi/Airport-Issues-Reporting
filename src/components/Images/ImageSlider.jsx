@@ -1,73 +1,61 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   FlatList,
   StyleSheet,
   Dimensions,
   Pressable,
+  Image,
 } from 'react-native';
 import COLORS from '../../utils/constants';
 import ImageModal from './ImageModal';
-import ImageWithEditsPreview from './ImageWithEditsPreview';
 
-const { width } = Dimensions.get('window');
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const IMAGE_SIZE = (SCREEN_WIDTH - 20) / 2;
 
-const ImageSlider = ({ images = [], edits = [], onEditChange }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
+const ImageSlider = ({
+  images = [],
+  edits = [],
+  onImageEdited,
+  readOnly = false,
+}) => {
   const [previewVisible, setPreviewVisible] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const flatListRef = useRef(null);
-
-  const onViewableItemsChanged = useRef(({ viewableItems }) => {
-    if (viewableItems.length > 0) {
-      setActiveIndex(viewableItems[0].index);
-    }
-  }).current;
+  const renderItem = ({ item, index }) => (
+    <Pressable
+      style={styles.imageWrapper}
+      onPress={() => {
+        setSelectedIndex(index);
+        setPreviewVisible(true);
+      }}
+    >
+      <View style={styles.imageCard}>
+        <Image source={{ uri: item }} style={styles.image} resizeMode="cover" />
+      </View>
+    </Pressable>
+  );
 
   return (
     <>
-      <View>
+      <View style={styles.container}>
         <FlatList
-          ref={flatListRef}
           data={images}
+          renderItem={renderItem}
           keyExtractor={(_, index) => index.toString()}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          onViewableItemsChanged={onViewableItemsChanged}
-          viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
-          renderItem={({ item, index }) => (
-            <Pressable
-              onPress={() => {
-                setPreviewVisible(true);
-                setActiveIndex(index);
-              }}
-            >
-              <ImageWithEditsPreview
-                imageUri={item}
-                paths={edits[index] || []}
-                style={styles.image}
-              />
-            </Pressable>
-          )}
+          numColumns={2}
+          scrollEnabled={false}
+          columnWrapperStyle={styles.row}
         />
-        <View style={styles.dotsContainer}>
-          {images.map((_, index) => (
-            <View
-              key={index}
-              style={[styles.dot, activeIndex === index && styles.activeDot]}
-            />
-          ))}
-        </View>
       </View>
 
       <ImageModal
         visible={previewVisible}
         onClose={() => setPreviewVisible(false)}
         images={images}
-        edits={edits}
-        onEditChange={onEditChange}
-        initialIndex={activeIndex}
+        onEditChange={onImageEdited}
+        initialIndex={selectedIndex}
+        readOnly={readOnly}
       />
     </>
   );
@@ -76,27 +64,29 @@ const ImageSlider = ({ images = [], edits = [], onEditChange }) => {
 export default ImageSlider;
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: 20,
+  },
+
+  row: {
+    justifyContent: 'flex-start',
+    marginHorizontal: -8,
+  },
+
+  imageWrapper: {
+    width: '50%',
+    padding: 8,
+  },
+
+  imageCard: {
+    borderRadius: 8,
+    overflow: 'hidden',
+    backgroundColor: COLORS.surface,
+    shadowColor: '#000',
+  },
+
   image: {
-    width,
-    height: 220,
-  },
-
-  dotsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 8,
-  },
-
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: COLORS.border,
-    marginHorizontal: 4,
-  },
-
-  activeDot: {
-    backgroundColor: COLORS.primary,
-    width: 10,
+    width: IMAGE_SIZE,
+    height: IMAGE_SIZE,
   },
 });

@@ -1,12 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  // useFrameProcessor,
-  // runAtTargetFps,
-  useCameraPermission,
-  useCameraDevice,
-  Camera,
-} from 'react-native-vision-camera';
+import CaptureImage from '../../components/Images/CaptureImage';
 import CameraButton from '../../components/UI/CameraButton';
 import Button from '../../components/UI/Button';
 import ThubnailStack from '../../components/Images/ThubnailStack';
@@ -27,9 +21,6 @@ const CreateIssueScreen = () => {
 
   const navigation = useNavigation();
   const [capturedPhotos, setCapturedPhotos] = useState([]);
-  const [imageEdits, setImageEdits] = useState([]);
-  const { hasPermission, requestPermission } = useCameraPermission();
-  const device = useCameraDevice('back');
   const camera = useRef(null);
   const MIN_PHOTOS = 3;
   const MAX_PHOTOS = 5;
@@ -46,26 +37,16 @@ const CreateIssueScreen = () => {
     reported: '',
   });
 
-  const onEditChange = (index, newPaths) => {
-    setImageEdits(prev => {
+  const onImageEdited = (index, newImagePath) => {
+    setCapturedPhotos(prev => {
       const updated = [...prev];
-      updated[index] = newPaths;
+      updated[index] = newImagePath; // Replace original with edited screenshot
       return updated;
     });
-    console.log('tam l edit ', imageEdits);
+    console.log('Image replaced with screenshot:', newImagePath);
   };
 
   const [startAnalyze, setStartAnalyze] = useState(false);
-
-  useEffect(() => {
-    console.log('render');
-    if (!hasPermission) {
-      requestPermission();
-    }
-  }, [hasPermission, requestPermission]);
-  useEffect(() => {
-    console.log(imageEdits);
-  }, [imageEdits]);
 
   const takePhoto = async () => {
     try {
@@ -75,7 +56,6 @@ const CreateIssueScreen = () => {
 
       if (!photo?.path) return;
       setCapturedPhotos(prev => [...prev, `file://${photo.path}`]);
-      setImageEdits(prev => [...prev, []]);
       console.log(capturedPhotos);
     } catch (error) {
       console.error('Error capturing photo:', error);
@@ -87,7 +67,6 @@ const CreateIssueScreen = () => {
     setNewItem(prev => ({
       ...prev,
       images: capturedPhotos,
-      edits: imageEdits,
     }));
     setStartAnalyze(true);
     console.log('Submitting photos:', capturedPhotos);
@@ -97,7 +76,6 @@ const CreateIssueScreen = () => {
     const updatedItem = {
       ...newItem,
       images: capturedPhotos,
-      edits: imageEdits,
       title: data.title,
       category: data.category,
       description: data.description,
@@ -110,57 +88,32 @@ const CreateIssueScreen = () => {
     const updatedItem = {
       ...newItem,
       images: capturedPhotos,
-      edits: imageEdits,
     };
 
     setNewItem(updatedItem);
     navigation.navigate('DetailsForm', { item: updatedItem });
   };
-  if (!hasPermission || !device) {
-    return (
-      <View style={styles.center}>
-        <Text>Camera not available</Text>
-      </View>
-    );
-  }
+
   return (
     <View style={styles.container}>
-      <Camera
-        ref={camera}
-        style={StyleSheet.absoluteFill}
-        device={device}
-        isActive={isFocused}
-        photo={true}
-        // frameProcessor={frameProcessor}
-        // pixelFormat="yuv"
-      />
-
+      <CaptureImage isFocused={isFocused} camera={camera} />
       <View style={styles.topOverlay}>
         <Text style={styles.counter}>
           {capturedPhotos.length} / {MAX_PHOTOS} photos
         </Text>
       </View>
-
       <View style={styles.bottomOverlay}>
-        <ThubnailStack
-          photos={capturedPhotos}
-          edits={imageEdits}
-          onEditChange={onEditChange}
-        />
-
+        <ThubnailStack photos={capturedPhotos} onEditChange={onImageEdited} />
         <View style={styles.captureWrapper}>
           {canTakePhoto && <CameraButton onPress={takePhoto} />}
         </View>
-
         <ImagePicker
           onPick={newPhotos => {
             setCapturedPhotos(prev => [...prev, ...newPhotos]);
-            setImageEdits(prev => [...prev, []]);
           }}
           maxPhotos={MAX_PHOTOS}
           currentCount={capturedPhotos.length}
         />
-
         <View style={styles.submitWrapper}>
           <Button
             disabled={!canSubmit}
@@ -187,11 +140,6 @@ export default CreateIssueScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  center: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 
   topOverlay: {

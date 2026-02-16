@@ -1,4 +1,4 @@
-const SERVER_URL = 'http://192.168.86.56:8000';
+const SERVER_URL = 'http://192.168.86.34:8000';
 
 async function uploadImages(photos) {
   const formData = new FormData();

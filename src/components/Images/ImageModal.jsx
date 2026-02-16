@@ -13,22 +13,50 @@ import Canva from './Canva';
 const { width, height } = Dimensions.get('window');
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useState, useRef } from 'react';
+import ViewShot from 'react-native-view-shot';
 const ImageModal = ({
   visible,
   onClose,
   images = [],
-  edits = [],
   onEditChange,
   initialIndex = 0,
+  readOnly = false,
 }) => {
+  const viewShotRefs = useRef({});
+
   const [isEditing, setIsEditing] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  const [temporaryPaths, setTemporaryPaths] = useState({});
+
   const flatListRef = useRef(null);
   const handleEditPress = () => {
     setIsEditing(true);
   };
-  const handleFinishPress = () => {
-    setIsEditing(false);
+  const handleFinishPress = async () => {
+    try {
+      const currentViewShot = viewShotRefs.current[currentIndex];
+
+      if (!currentViewShot) {
+        console.error('ViewShot ref not found for index:', currentIndex);
+        setIsEditing(false);
+        return;
+      }
+      const screenshotUri = await currentViewShot.capture();
+
+      console.log('Screenshot captured successfully:', screenshotUri);
+      if (onEditChange) {
+        onEditChange(currentIndex, screenshotUri);
+      }
+      setTemporaryPaths(prev => {
+        const updated = { ...prev };
+        delete updated[currentIndex];
+        return updated;
+      });
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Failed to capture screenshot:', error);
+      setIsEditing(false);
+    }
   };
   const handleScroll = event => {
     const offsetX = event.nativeEvent.contentOffset.x;
@@ -36,14 +64,13 @@ const ImageModal = ({
     setCurrentIndex(index);
   };
   const handleNewPath = (imageIndex, newPath) => {
-    // Get current paths for this image
-    const currentPaths = edits[imageIndex] || [];
-    // Add the new path
-    const updatedPaths = [...currentPaths, newPath];
-    // Update the parent state
-    if (onEditChange) {
-      onEditChange(imageIndex, updatedPaths);
-    }
+    setTemporaryPaths(prev => {
+      const currentPaths = prev[imageIndex] || [];
+      return {
+        ...prev,
+        [imageIndex]: [...currentPaths, newPath],
+      };
+    });
   };
   return (
     <Modal visible={visible} transparent animationType="fade">
@@ -51,14 +78,16 @@ const ImageModal = ({
         <Pressable style={styles.closeButton} onPress={onClose}>
           <Text style={styles.closeIcon}>✕</Text>
         </Pressable>
-        {isEditing ? (
+        {!readOnly && isEditing ? (
           <Pressable style={styles.finishButton} onPress={handleFinishPress}>
             <Text style={styles.buttonIcon}>✓</Text>
           </Pressable>
         ) : (
-          <Pressable style={styles.editButton} onPress={handleEditPress}>
-            <Text style={styles.buttonIcon}>🖌️</Text>
-          </Pressable>
+          !readOnly && (
+            <Pressable style={styles.editButton} onPress={handleEditPress}>
+              <Text style={styles.buttonIcon}>🖌️</Text>
+            </Pressable>
+          )
         )}
         <FlatList
           ref={flatListRef}
@@ -77,12 +106,18 @@ const ImageModal = ({
           })}
           renderItem={({ item, index }) => (
             <View style={styles.imageWrapper}>
-              <Canva
-                image={item}
-                isEditing={isEditing}
-                paths={edits[index] || []}
-                onNewPath={newPath => handleNewPath(index, newPath)}
-              />
+              <ViewShot
+                ref={ref => (viewShotRefs.current[index] = ref)}
+                options={{ format: 'png', quality: 0.8 }}
+                style={styles.viewShotContainer}
+              >
+                <Canva
+                  image={item}
+                  isEditing={isEditing}
+                  paths={temporaryPaths[index] || []}
+                  onNewPath={newPath => handleNewPath(index, newPath)}
+                />
+              </ViewShot>
             </View>
           )}
         />
@@ -141,5 +176,9 @@ const styles = StyleSheet.create({
     height,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  viewShotContainer: {
+    width: '100%',
+    height: '100%',
   },
 });

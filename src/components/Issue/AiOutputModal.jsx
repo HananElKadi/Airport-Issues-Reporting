@@ -88,7 +88,13 @@ const AiOutputModal = ({ visible, onAccept, onReject, images }) => {
   }
 
   if (error) {
-    return <ErrorModal message={error} />;
+    return (
+      <ErrorModal
+        visible={true}
+        message={error}
+        onClose={() => setError(null)}
+      />
+    );
   }
 
   if (!data) {
