@@ -8,12 +8,12 @@ export default function Card(props) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: COLORS.background,
+    backgroundColor: COLORS.surface,
     borderRadius: 14,
     margin: 10,
 
     // iOS shadow
-    shadowColor: COLORS.primary,
+    shadowColor: COLORS.shadowColor,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.15,
     shadowRadius: 6,
@@ -23,6 +23,6 @@ const styles = StyleSheet.create({
 
     // Optional border for structure
     borderWidth: 1,
-    borderColor: COLORS.border,
+    borderColor: COLORS.borderStrong,
   },
 });

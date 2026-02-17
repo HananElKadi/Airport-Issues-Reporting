@@ -23,6 +23,7 @@ const IssueDetailsFormScreen = props => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const { item = {}, readOnly = false } = props.route.params || {};
+
   const submitHandler = values => {
     dispatch(addIssue(values));
     navigation.navigate('Issues');
@@ -42,6 +43,7 @@ const IssueDetailsFormScreen = props => {
         description: item.description || '',
         status: item.status || 'Open',
         category: item.category || '',
+        type: item.type || 'Private',
         location: item.location || '',
         reported: item.reported || '',
         images: item.images || [],
@@ -62,7 +64,6 @@ const IssueDetailsFormScreen = props => {
         setFieldValue,
       }) => (
         <ScrollView style={styles.container}>
-          {/* Pass both images and edits to ImageSlider */}
           <ImageSlider
             images={values.images}
             readOnly={readOnly}
@@ -76,7 +77,7 @@ const IssueDetailsFormScreen = props => {
           <View style={styles.field}>
             <Text style={styles.label}>Title</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, readOnly && styles.inputReadOnly]}
               onChangeText={handleChange('title')}
               onBlur={handleBlur('title')}
               value={values.title}
@@ -92,7 +93,11 @@ const IssueDetailsFormScreen = props => {
           <View style={styles.field}>
             <Text style={styles.label}>Description</Text>
             <TextInput
-              style={[styles.input, styles.textArea]}
+              style={[
+                styles.input,
+                styles.textArea,
+                readOnly && styles.inputReadOnly,
+              ]}
               onChangeText={handleChange('description')}
               onBlur={handleBlur('description')}
               value={values.description}
@@ -108,11 +113,16 @@ const IssueDetailsFormScreen = props => {
 
           <View style={styles.field}>
             <Text style={styles.label}>Status</Text>
-            <View style={styles.pickerWrapper}>
+            <View
+              style={[
+                styles.pickerWrapper,
+                readOnly && styles.pickerWrapperReadOnly,
+              ]}
+            >
               <Picker
                 selectedValue={values.status}
                 onValueChange={value => setFieldValue('status', value)}
-                enabled={!readOnly}
+                enabled={true}
               >
                 <Picker.Item label="Open" value="Open" />
                 <Picker.Item label="In Progress" value="In-Progress" />
@@ -126,7 +136,12 @@ const IssueDetailsFormScreen = props => {
 
           <View style={styles.field}>
             <Text style={styles.label}>Category</Text>
-            <View style={styles.pickerWrapper}>
+            <View
+              style={[
+                styles.pickerWrapper,
+                readOnly && styles.pickerWrapperReadOnly,
+              ]}
+            >
               <Picker
                 selectedValue={values.category}
                 onValueChange={value => setFieldValue('category', value)}
@@ -145,10 +160,36 @@ const IssueDetailsFormScreen = props => {
               <Text style={styles.error}>{errors.category}</Text>
             )}
           </View>
+          <View style={styles.field}>
+            <Text style={styles.label}>Type</Text>
+            <View
+              style={[
+                styles.pickerWrapper,
+                readOnly && styles.pickerWrapperReadOnly,
+              ]}
+            >
+              <Picker
+                selectedValue={values.type}
+                onValueChange={value => setFieldValue('type', value)}
+                enabled={true}
+              >
+                <Picker.Item label="Private" value="Private" />
+                <Picker.Item label="Public" value="Public" />
+              </Picker>
+            </View>
+            {errors.type && touched.type && (
+              <Text style={styles.error}>{errors.type}</Text>
+            )}
+          </View>
 
           <View style={styles.field}>
             <Text style={styles.label}>Location</Text>
-            <View style={styles.pickerWrapper}>
+            <View
+              style={[
+                styles.pickerWrapper,
+                readOnly && styles.pickerWrapperReadOnly,
+              ]}
+            >
               <Picker
                 selectedValue={values.location}
                 onValueChange={value => setFieldValue('location', value)}
@@ -189,7 +230,7 @@ const IssueDetailsFormScreen = props => {
           <View style={styles.field}>
             <Text style={styles.label}>Reported By</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, readOnly && styles.inputReadOnly]}
               onChangeText={handleChange('reported')}
               onBlur={handleBlur('reported')}
               value={values.reported}
@@ -203,8 +244,8 @@ const IssueDetailsFormScreen = props => {
           </View>
 
           {!item.id && <Button title="Submit Issue" onPress={handleSubmit} />}
-          {/* {item.id && <Button title="Update Issue" onPress={handleSubmit} />} */}
-          <View style={{ margin: 20 }}></View>
+          {item.id && <Button title="Update Issue" onPress={handleSubmit} />}
+          <View style={{ margin: 20 }} />
         </ScrollView>
       )}
     </Formik>
@@ -231,7 +272,7 @@ const styles = StyleSheet.create({
   },
 
   label: {
-    fontSize: 13,
+    fontSize: 15,
     color: COLORS.textSecondary,
     marginBottom: 6,
   },
@@ -247,6 +288,14 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
 
+  inputReadOnly: {
+    backgroundColor: COLORS.disabledBg,
+    borderColor: COLORS.disabledBorder,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    color: COLORS.disabledText,
+  },
+
   textArea: {
     height: 110,
     textAlignVertical: 'top',
@@ -258,6 +307,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     overflow: 'hidden',
     backgroundColor: COLORS.surface,
+  },
+
+  pickerWrapperReadOnly: {
+    backgroundColor: COLORS.disabledBg,
+    borderColor: COLORS.disabledBorder,
   },
 
   error: {
@@ -275,7 +329,7 @@ const styles = StyleSheet.create({
   },
 
   submitText: {
-    color: COLORS.white,
+    color: COLORS.textInverse,
     fontSize: 16,
     fontWeight: '600',
   },

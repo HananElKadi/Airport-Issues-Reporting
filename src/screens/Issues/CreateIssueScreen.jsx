@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import CaptureImage from '../../components/Images/CaptureImage';
 import CameraButton from '../../components/UI/CameraButton';
 import Button from '../../components/UI/Button';
@@ -7,7 +7,7 @@ import ThubnailStack from '../../components/Images/ThubnailStack';
 import ImagePicker from '../../components/Images/ImagePicker';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import AiOutputModal from '../../components/Issue/AiOutputModal';
-
+import COLORS from '../../utils/constants';
 const CreateIssueScreen = () => {
   const isFocused = useIsFocused();
   // const frameProcessor = useFrameProcessor(frame => {
@@ -150,9 +150,9 @@ const styles = StyleSheet.create({
   },
 
   counter: {
-    color: '#fff',
+    color: COLORS.textInverse,
     fontSize: 14,
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    backgroundColor: COLORS.hoverBg,
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 20,

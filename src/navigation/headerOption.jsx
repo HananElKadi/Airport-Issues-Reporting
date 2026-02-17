@@ -4,7 +4,7 @@ const headerOptions = {
   headerStyle: {
     backgroundColor: COLORS.primary,
   },
-  headerTintColor: '#fff',
+  headerTintColor: COLORS.textInverse,
   headerTitleStyle: {
     fontWeight: '600',
     fontSize: 18,

@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { useState } from 'react';
 import ImageModal from './ImageModal';
-
+import COLORS from '../../utils/constants';
 const ThubnailStack = ({ photos, onEditChange }) => {
   const [visible, setVisible] = useState(false);
   return (
@@ -74,9 +74,9 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 30,
     borderWidth: 2,
-    borderColor: '#fff',
+    borderColor: COLORS.border,
     overflow: 'hidden',
-    backgroundColor: '#000',
+    backgroundColor: COLORS.backdrop,
   },
 
   thumbnailImage: {
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
 
   morePhotosText: {
-    color: '#fff',
+    color: COLORS.textInverse,
     fontSize: 16,
     fontWeight: 'bold',
   },

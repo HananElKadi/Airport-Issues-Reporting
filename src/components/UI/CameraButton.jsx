@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet, View } from 'react-native';
-
+import COLORS from '../../utils/constants';
 const CameraButton = ({ onPress }) => {
   return (
     <TouchableOpacity
@@ -28,15 +28,15 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 40,
     borderWidth: 4,
-    borderColor: '#fff',
+    borderColor: COLORS.surface,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255,255,255,0.15)',
+    backgroundColor: COLORS.hoverBg,
   },
   inner: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.surface,
   },
 });

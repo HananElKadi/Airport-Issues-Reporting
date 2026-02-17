@@ -22,7 +22,7 @@ export default function Button({
       style={[styles.button, disabled && styles.disabled, style]}
     >
       {loading ? (
-        <ActivityIndicator color="#fff" />
+        <ActivityIndicator color={COLORS.textInverse} />
       ) : (
         <Text style={styles.text}>{title}</Text>
       )}
@@ -48,13 +48,13 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    color: '#fff',
+    color: COLORS.textInverse,
     fontSize: 16,
     fontWeight: '600',
   },
 
   disabled: {
-    backgroundColor: COLORS.muted,
+    backgroundColor: COLORS.backgroundSunken,
     elevation: 0,
     shadowOpacity: 0,
   },

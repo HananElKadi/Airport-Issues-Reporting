@@ -12,7 +12,7 @@ const Stack = createNativeStackNavigator();
 
 const HeaderAddButton = ({ onPress }) => (
   <TouchableOpacity onPress={onPress} style={{ marginRight: 16 }}>
-    <Text style={{ fontSize: 26, color: COLORS.info }}>+</Text>
+    <Text style={{ fontSize: 26, color: COLORS.accent }}>+</Text>
   </TouchableOpacity>
 );
 

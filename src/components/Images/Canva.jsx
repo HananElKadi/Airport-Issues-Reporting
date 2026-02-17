@@ -14,6 +14,7 @@ import {
   useDerivedValue,
 } from 'react-native-reanimated';
 import LoadingSpinner from '../UI/LoadingSpinner';
+import COLORS from '../../utils/constants';
 
 const { width, height } = Dimensions.get('window');
 
@@ -69,12 +70,17 @@ const Canva = ({ image: imageUri, isEditing, paths = [], onNewPath }) => {
           <Path
             key={index}
             path={p}
-            color="cyan"
+            color={COLORS.info}
             style="stroke"
             strokeWidth={4}
           />
         ))}
-        <Path path={animatedPath} color="red" style="stroke" strokeWidth={4} />
+        <Path
+          path={animatedPath}
+          color={COLORS.info}
+          style="stroke"
+          strokeWidth={4}
+        />
       </Canvas>
     </GestureDetector>
   );

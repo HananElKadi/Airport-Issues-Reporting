@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   FlatList,
@@ -6,55 +6,95 @@ import {
   Dimensions,
   Pressable,
   Image,
+  Text,
 } from 'react-native';
 import COLORS from '../../utils/constants';
 import ImageModal from './ImageModal';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const IMAGE_SIZE = (SCREEN_WIDTH - 20) / 2;
 
-const ImageSlider = ({
-  images = [],
-  edits = [],
-  onImageEdited,
-  readOnly = false,
-}) => {
+const MAIN_WIDTH = SCREEN_WIDTH - 35;
+const MAIN_HEIGHT = MAIN_WIDTH;
+
+const THUMB_WIDTH = 120;
+const THUMB_HEIGHT = 120;
+
+const ImageSlider = ({ images = [], onImageEdited, readOnly = false }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
   const [previewVisible, setPreviewVisible] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const thumbListRef = useRef(null);
 
-  const renderItem = ({ item, index }) => (
+  const activeImage = images[activeIndex];
+
+  const handleThumbPress = index => {
+    setActiveIndex(index);
+    thumbListRef.current?.scrollToIndex({
+      index,
+      viewPosition: 0.5,
+      animated: true,
+    });
+  };
+
+  const renderThumb = ({ item: uri, index }) => (
     <Pressable
-      style={styles.imageWrapper}
-      onPress={() => {
-        setSelectedIndex(index);
-        setPreviewVisible(true);
-      }}
+      style={[
+        styles.thumbCard,
+        index === activeIndex && styles.thumbCardActive,
+      ]}
+      onPress={() => handleThumbPress(index)}
     >
-      <View style={styles.imageCard}>
-        <Image source={{ uri: item }} style={styles.image} resizeMode="cover" />
-      </View>
+      <Image source={{ uri }} style={styles.thumbImage} resizeMode="cover" />
     </Pressable>
   );
 
+  if (images.length === 0) return null;
+
   return (
     <>
-      <View style={styles.container}>
-        <FlatList
-          data={images}
-          renderItem={renderItem}
-          keyExtractor={(_, index) => index.toString()}
-          numColumns={2}
-          scrollEnabled={false}
-          columnWrapperStyle={styles.row}
+      <Pressable
+        style={styles.mainCard}
+        onPress={() => setPreviewVisible(true)}
+        activeOpacity={0.95}
+      >
+        <Image
+          source={{ uri: activeImage }}
+          style={styles.mainImage}
+          resizeMode="cover"
         />
-      </View>
+
+        <View style={styles.counterBadge}>
+          <Text style={styles.counterText}>
+            {activeIndex + 1}/{images.length}
+          </Text>
+        </View>
+      </Pressable>
+
+      <FlatList
+        ref={thumbListRef}
+        data={images}
+        keyExtractor={(_, index) => index.toString()}
+        renderItem={renderThumb}
+        horizontal
+        showsHorizontalScrollIndicator={true}
+        contentContainerStyle={styles.thumbStrip}
+        style={styles.thumbScroll}
+        onScrollToIndexFailed={({ index }) => {
+          setTimeout(() => {
+            thumbListRef.current?.scrollToIndex({
+              index,
+              viewPosition: 0.5,
+              animated: true,
+            });
+          }, 200);
+        }}
+      />
 
       <ImageModal
         visible={previewVisible}
         onClose={() => setPreviewVisible(false)}
         images={images}
         onEditChange={onImageEdited}
-        initialIndex={selectedIndex}
+        initialIndex={activeIndex}
         readOnly={readOnly}
       />
     </>
@@ -64,29 +104,77 @@ const ImageSlider = ({
 export default ImageSlider;
 
 const styles = StyleSheet.create({
-  container: {
-    marginBottom: 20,
-  },
-
-  row: {
-    justifyContent: 'flex-start',
-    marginHorizontal: -8,
-  },
-
-  imageWrapper: {
-    width: '50%',
-    padding: 8,
-  },
-
-  imageCard: {
-    borderRadius: 8,
+  mainCard: {
+    width: MAIN_WIDTH,
+    height: MAIN_HEIGHT,
+    borderRadius: 18,
     overflow: 'hidden',
-    backgroundColor: COLORS.surface,
-    shadowColor: '#000',
+    alignSelf: 'center',
+    backgroundColor: COLORS.backdrop,
+    shadowColor: COLORS.black,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 6,
   },
 
-  image: {
-    width: IMAGE_SIZE,
-    height: IMAGE_SIZE,
+  mainImage: {
+    width: '100%',
+    height: '100%',
+  },
+
+  counterBadge: {
+    position: 'absolute',
+    top: 12,
+    right: 12,
+    backgroundColor: COLORS.hoverBg,
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+
+  counterText: {
+    color: COLORS.textInverse,
+    fontSize: 13,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
+
+  thumbScroll: {
+    marginTop: 14,
+    marginBottom: 8,
+  },
+
+  thumbStrip: {
+    paddingHorizontal: 16,
+    gap: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  thumbCard: {
+    width: THUMB_WIDTH,
+    height: THUMB_HEIGHT,
+    borderRadius: 14,
+    overflow: 'visible',
+    backgroundColor: COLORS.backdrop,
+    shadowColor: COLORS.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.12,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+
+  thumbCardActive: {
+    shadowOpacity: 0.28,
+    shadowRadius: 10,
+    elevation: 8,
+    transform: [{ scale: 1.04 }],
+  },
+
+  thumbImage: {
+    width: THUMB_WIDTH,
+    height: THUMB_HEIGHT,
+    borderRadius: 14,
   },
 });

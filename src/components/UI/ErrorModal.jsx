@@ -26,13 +26,13 @@ const ErrorModal = ({ visible, message, onClose }) => {
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: COLORS.hoverBg,
     justifyContent: 'center',
     alignItems: 'center',
   },
   container: {
     width: '80%',
-    backgroundColor: COLORS.grayLight,
+    backgroundColor: COLORS.surface,
     borderRadius: 10,
     padding: 20,
     alignItems: 'center',
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
   message: {
     fontSize: 17,
-    color: COLORS.errorLight,
+    color: COLORS.error,
     textAlign: 'center',
     marginBottom: 20,
   },
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   buttonText: {
-    color: COLORS.white,
+    color: COLORS.textInverse,
     fontWeight: '600',
     fontSize: 16,
   },

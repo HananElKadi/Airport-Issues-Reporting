@@ -4,7 +4,7 @@ import Button from '../UI/Button';
 import ErrorModal from '../UI/ErrorModal';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import uploadImage from '../../services/aiReasonningApi';
-import { loadData } from '@shopify/react-native-skia';
+import COLORS from '../../utils/constants';
 
 const AiOutputModal = ({ visible, onAccept, onReject, images }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -92,7 +92,10 @@ const AiOutputModal = ({ visible, onAccept, onReject, images }) => {
       <ErrorModal
         visible={true}
         message={error}
-        onClose={() => setError(null)}
+        onClose={() => {
+          setError(null);
+          onReject();
+        }}
       />
     );
   }
@@ -138,17 +141,17 @@ const DataField = ({ label, value }) => (
 const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: COLORS.hoverBg,
     justifyContent: 'center',
     alignItems: 'center',
   },
   modalContainer: {
     width: '90%',
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.background,
     borderRadius: 16,
     padding: 20,
     elevation: 6,
-    shadowColor: '#000',
+    shadowColor: COLORS.shadowColor,
     shadowOpacity: 0.25,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 4 },
@@ -158,7 +161,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'center',
     marginBottom: 16,
-    color: '#111',
+    color: COLORS.textPrimary,
   },
   field: {
     marginBottom: 12,
@@ -166,12 +169,12 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 13,
     fontWeight: '500',
-    color: '#666',
+    color: COLORS.textSecondary,
     marginBottom: 4,
   },
   value: {
     fontSize: 15,
-    color: '#222',
+    color: COLORS.textPrimary,
     lineHeight: 20,
   },
   actions: {

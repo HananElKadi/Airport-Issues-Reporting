@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 4,
-    backgroundColor: COLORS.info,
+    backgroundColor: COLORS.primary400,
     padding: 4,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
@@ -55,17 +55,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: COLORS.white,
+    color: COLORS.textInverse,
     padding: 8,
   },
   status: {
     fontSize: 14,
-    color: COLORS.grayLight,
+    color: COLORS.textInverse,
     paddingRight: 4,
-  },
-  newStatus: {
-    color: 'green',
-    fontWeight: 'bold',
   },
   bottomGrid: {
     flexDirection: 'row',
@@ -77,7 +73,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   label: {
-    fontSize: 15,
+    fontSize: 16,
+    paddingHorizontal: 10,
     color: COLORS.textSecondary,
   },
   value: {

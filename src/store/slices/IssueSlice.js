@@ -9,7 +9,14 @@ const issueSlice = createSlice({
     addIssue: (state, action) => {
       const newIssue = {
         id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-        updated: new Date().toISOString(),
+        updated: new Date().toLocaleString('en-GB', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true,
+        }),
         ...action.payload,
       };
       state.issues.push(newIssue);
@@ -21,7 +28,14 @@ const issueSlice = createSlice({
         state.issues[index] = {
           ...state.issues[index],
           ...data,
-          updated: new Date().toISOString(),
+          updated: new Date().toLocaleString('en-GB', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true,
+          }),
         };
       }
     },

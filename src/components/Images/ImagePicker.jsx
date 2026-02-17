@@ -1,6 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
+import COLORS from '../../utils/constants';
 
 const ImagePicker = ({ onPick, maxPhotos = 5, currentCount = 0 }) => {
   const pickFromGallery = async () => {
@@ -42,14 +43,14 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    backgroundColor: COLORS.hoverBg,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: '#fff',
+    borderColor: COLORS.border,
   },
   text: {
-    color: '#fff',
+    color: COLORS.textInverse,
     fontSize: 20,
   },
 });
