@@ -64,16 +64,6 @@ const IssueDetailsFormScreen = props => {
         setFieldValue,
       }) => (
         <ScrollView style={styles.container}>
-          <ImageSlider
-            images={values.images}
-            readOnly={readOnly}
-            onImageEdited={(index, newImagePath) => {
-              const updatedImages = [...values.images];
-              updatedImages[index] = newImagePath;
-              setFieldValue('images', updatedImages);
-            }}
-          />
-
           <View style={styles.field}>
             <Text style={styles.label}>Title</Text>
             <TextInput
@@ -90,6 +80,18 @@ const IssueDetailsFormScreen = props => {
             )}
           </View>
 
+          <View style={styles.field}>
+            <Text style={styles.label}>Photos</Text>
+            <ImageSlider
+              images={values.images}
+              readOnly={readOnly}
+              onImageEdited={(index, newImagePath) => {
+                const updatedImages = [...values.images];
+                updatedImages[index] = newImagePath;
+                setFieldValue('images', updatedImages);
+              }}
+            />
+          </View>
           <View style={styles.field}>
             <Text style={styles.label}>Description</Text>
             <TextInput
