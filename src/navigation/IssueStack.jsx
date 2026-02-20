@@ -1,7 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import IssuesFeedScreen from '../screens/Issues/IssuesFeedScreen';
-import IssueDetailsScreen from '../screens/Issues/IssueDetailsScreen';
 import CreateIssueScreen from '../screens/Issues/CreateIssueScreen';
 import IssueDetailsFormScreen from '../screens/Issues/IssueDetailsFormScreen';
 import headerOptions from './headerOption';
@@ -10,9 +9,9 @@ import COLORS from '../utils/constants';
 
 const Stack = createNativeStackNavigator();
 
-const HeaderAddButton = ({ onPress }) => (
-  <TouchableOpacity onPress={onPress} style={{ marginRight: 16 }}>
-    <Text style={{ fontSize: 26, color: COLORS.accent }}>+</Text>
+const MenuButton = ({ onPress }) => (
+  <TouchableOpacity onPress={onPress} style={{ marginLeft: 16 }}>
+    <Text style={{ fontSize: 26, color: COLORS.accent }}>☰</Text>
   </TouchableOpacity>
 );
 
@@ -24,17 +23,14 @@ const IssueStack = () => {
         component={IssuesFeedScreen}
         options={({ navigation }) => ({
           title: 'Report Issues',
-          headerRight: () => (
-            <HeaderAddButton
-              onPress={() => navigation.navigate('CreateIssue')}
+          headerLeft: () => (
+            <MenuButton
+              onPress={() => {
+                navigation.openDrawer();
+              }}
             />
           ),
         })}
-      />
-      <Stack.Screen
-        name="Details"
-        component={IssueDetailsScreen}
-        options={{ title: 'Issue Details' }}
       />
       <Stack.Screen
         name="CreateIssue"

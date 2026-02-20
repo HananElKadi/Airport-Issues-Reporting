@@ -1,7 +1,6 @@
 // import { SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
-import IssueStack from './src/navigation/IssueStack';
-
+import IssueDrawer from './src/navigation/IssueDrawer';
 import { useEffect } from 'react';
 import { setIssue } from './src/store/slices/IssueSlice';
 import { useDispatch } from 'react-redux';
@@ -118,7 +117,7 @@ function App() {
   return (
     // <SafeAreaView style={{ flex: 1, backgroundColor: 'red' }}>
     <NavigationContainer>
-      <IssueStack />
+      <IssueDrawer />
     </NavigationContainer>
     // </SafeAreaView>
   );

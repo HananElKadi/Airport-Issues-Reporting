@@ -1,29 +1,46 @@
-import React from 'react';
-import { FlatList, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import IssueCard from '../../components/Issue/IssueCard';
 import { useSelector } from 'react-redux';
+import { selectFilteredIssues } from '../../store/selectors/selector';
+import COLORS from '../../utils/constants';
+import IssueSearchScreen from './IssueSearchScreen';
+import IssueList from '../../components/Issue/IssueList';
 
 const IssuesFeedScreen = props => {
-  const issues = useSelector(state => state.issue.issues);
+  const [showSearchBar, setShowSearchBar] = useState(false);
+  const issues = useSelector(selectFilteredIssues);
   const navigation = useNavigation();
-  console.log(issues);
+
+  const HeaderAddButton = ({ onPress }) => (
+    <TouchableOpacity onPress={onPress} style={{ marginRight: 16 }}>
+      <Text style={{ fontSize: 26, color: COLORS.accent }}>+</Text>
+    </TouchableOpacity>
+  );
+
+  const HeaderSearchButton = ({ onPress }) => (
+    <TouchableOpacity onPress={onPress} style={{ marginRight: 16 }}>
+      <Text style={{ fontSize: 30, color: COLORS.accent }}>⌕</Text>
+    </TouchableOpacity>
+  );
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <HeaderSearchButton onPress={() => setShowSearchBar(prev => !prev)} />
+          <HeaderAddButton onPress={() => navigation.navigate('CreateIssue')} />
+        </View>
+      ),
+    });
+  }, [navigation]);
+
   return (
     <>
-      <FlatList
-        data={issues}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('DetailsForm', { item: item, readOnly: true })
-            }
-          >
-            <IssueCard item={item} />
-          </TouchableOpacity>
-        )}
-        keyExtractor={item => item.id}
-      />
+      {showSearchBar && <IssueSearchScreen />}
+      <IssueList issues={issues} />
     </>
   );
 };
+
 export default IssuesFeedScreen;

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, FlatList, StyleSheet, Pressable, Image } from 'react-native';
+import { FlatList, StyleSheet, Pressable, Image } from 'react-native';
 import COLORS from '../../utils/constants';
 import ImageModal from './ImageModal';
 

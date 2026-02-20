@@ -1,14 +1,15 @@
 import React from 'react';
 import { View, Text, TextInput, ScrollView, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
-import { Picker } from '@react-native-picker/picker';
 import * as Yup from 'yup';
 import COLORS from '../../utils/constants';
 import Button from '../../components/UI/Button';
 import ImageSlider from '../../components/Images/ImageSlider';
+import CustomDropDown from '../../components/UI/CustomDropdown';
 import { useDispatch } from 'react-redux';
 import { addIssue, updateIssue } from '../../store/slices/IssueSlice';
 import { useNavigation } from '@react-navigation/native';
+import { STATUS, CATEGORIES, LOCATIONS, TYPES } from '../../utils/values';
 
 const IssueSchema = Yup.object().shape({
   title: Yup.string().required('Title is required'),
@@ -31,8 +32,7 @@ const IssueDetailsFormScreen = props => {
 
   const updateHandler = values => {
     dispatch(updateIssue({ id: item.id, data: values }));
-    console.log('updated');
-    navigation.navigate('Issues');
+    navigation.canGoBack() && navigation.goBack();
   };
 
   return (
@@ -41,9 +41,9 @@ const IssueDetailsFormScreen = props => {
       initialValues={{
         title: item.title || '',
         description: item.description || '',
-        status: item.status || 'Open',
+        status: item.status || STATUS[0],
         category: item.category || '',
-        type: item.type || 'Private',
+        type: item.type || TYPES[0],
         location: item.location || '',
         reported: item.reported || '',
         images: item.images || [],
@@ -92,6 +92,34 @@ const IssueDetailsFormScreen = props => {
               }}
             />
           </View>
+
+          <View style={styles.field}>
+            <Text style={styles.label}>Status</Text>
+            <CustomDropDown
+              list={STATUS}
+              value={values.status}
+              onChange={value => setFieldValue('status', value)}
+              placeholder="Select status"
+              readOnly={false}
+            />
+            {errors.status && touched.status && (
+              <Text style={styles.error}>{errors.status}</Text>
+            )}
+          </View>
+          <View style={styles.field}>
+            <Text style={styles.label}>Type</Text>
+            <CustomDropDown
+              list={TYPES}
+              value={values.type}
+              onChange={value => setFieldValue('type', value)}
+              placeholder="Select type"
+              readOnly={false}
+            />
+            {errors.type && touched.type && (
+              <Text style={styles.error}>{errors.type}</Text>
+            )}
+          </View>
+
           <View style={styles.field}>
             <Text style={styles.label}>Description</Text>
             <TextInput
@@ -114,116 +142,28 @@ const IssueDetailsFormScreen = props => {
           </View>
 
           <View style={styles.field}>
-            <Text style={styles.label}>Status</Text>
-            <View
-              style={[
-                styles.pickerWrapper,
-                readOnly && styles.pickerWrapperReadOnly,
-              ]}
-            >
-              <Picker
-                selectedValue={values.status}
-                onValueChange={value => setFieldValue('status', value)}
-                enabled={true}
-              >
-                <Picker.Item label="Open" value="Open" />
-                <Picker.Item label="In Progress" value="In-Progress" />
-                <Picker.Item label="Resolved" value="Resolved" />
-              </Picker>
-            </View>
-            {errors.status && touched.status && (
-              <Text style={styles.error}>{errors.status}</Text>
-            )}
-          </View>
-
-          <View style={styles.field}>
             <Text style={styles.label}>Category</Text>
-            <View
-              style={[
-                styles.pickerWrapper,
-                readOnly && styles.pickerWrapperReadOnly,
-              ]}
-            >
-              <Picker
-                selectedValue={values.category}
-                onValueChange={value => setFieldValue('category', value)}
-                enabled={!readOnly}
-              >
-                <Picker.Item label="Select category" value="" />
-                <Picker.Item label="Electrical" value="Electrical" />
-                <Picker.Item label="Plumbing" value="Plumbing" />
-                <Picker.Item label="Janitorial" value="Janitorial" />
-                <Picker.Item label="Structural" value="Structural" />
-                <Picker.Item label="Safety" value="Safety" />
-                <Picker.Item label="IT / Systems" value="IT" />
-              </Picker>
-            </View>
+            <CustomDropDown
+              list={CATEGORIES}
+              value={values.category}
+              onChange={value => setFieldValue('category', value)}
+              placeholder="Select category"
+              readOnly={readOnly}
+            />
             {errors.category && touched.category && (
               <Text style={styles.error}>{errors.category}</Text>
-            )}
-          </View>
-          <View style={styles.field}>
-            <Text style={styles.label}>Type</Text>
-            <View
-              style={[
-                styles.pickerWrapper,
-                readOnly && styles.pickerWrapperReadOnly,
-              ]}
-            >
-              <Picker
-                selectedValue={values.type}
-                onValueChange={value => setFieldValue('type', value)}
-                enabled={true}
-              >
-                <Picker.Item label="Private" value="Private" />
-                <Picker.Item label="Public" value="Public" />
-              </Picker>
-            </View>
-            {errors.type && touched.type && (
-              <Text style={styles.error}>{errors.type}</Text>
             )}
           </View>
 
           <View style={styles.field}>
             <Text style={styles.label}>Location</Text>
-            <View
-              style={[
-                styles.pickerWrapper,
-                readOnly && styles.pickerWrapperReadOnly,
-              ]}
-            >
-              <Picker
-                selectedValue={values.location}
-                onValueChange={value => setFieldValue('location', value)}
-                enabled={!readOnly}
-              >
-                <Picker.Item label="Select location" value="" />
-                <Picker.Item
-                  label="Terminal 1 – Gate A12"
-                  value="Terminal 1, Gate A12"
-                />
-                <Picker.Item
-                  label="Terminal 1 – Security Checkpoint C"
-                  value="Terminal 1, Security Checkpoint C"
-                />
-                <Picker.Item
-                  label="Terminal 2 – Food Court"
-                  value="Terminal 2, Food Court"
-                />
-                <Picker.Item
-                  label="Terminal 2 – Restrooms (Concourse B)"
-                  value="Terminal 2, Restrooms, Concourse B"
-                />
-                <Picker.Item
-                  label="Terminal 3 – Arrival Hall"
-                  value="Terminal 3, Arrival Hall"
-                />
-                <Picker.Item
-                  label="Baggage Claim – Carousel Area"
-                  value="Baggage Claim, Carousel Area"
-                />
-              </Picker>
-            </View>
+            <CustomDropDown
+              list={LOCATIONS}
+              value={values.location}
+              onChange={value => setFieldValue('location', value)}
+              placeholder="Select location"
+              readOnly={readOnly}
+            />
             {errors.location && touched.location && (
               <Text style={styles.error}>{errors.location}</Text>
             )}
@@ -247,7 +187,7 @@ const IssueDetailsFormScreen = props => {
 
           {!item.id && <Button title="Submit Issue" onPress={handleSubmit} />}
           {item.id && <Button title="Update Issue" onPress={handleSubmit} />}
-          <View style={{ margin: 20 }} />
+          <View style={styles.footer} />
         </ScrollView>
       )}
     </Formik>
@@ -261,24 +201,14 @@ const styles = StyleSheet.create({
     padding: 20,
     flex: 1,
   },
-
-  header: {
-    fontSize: 22,
-    fontWeight: '600',
-    marginBottom: 20,
-    color: COLORS.textPrimary,
-  },
-
   field: {
     marginBottom: 16,
   },
-
   label: {
     fontSize: 15,
     color: COLORS.textSecondary,
     marginBottom: 6,
   },
-
   input: {
     borderWidth: 1,
     borderColor: COLORS.border,
@@ -289,50 +219,21 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: COLORS.textPrimary,
   },
-
   inputReadOnly: {
     backgroundColor: COLORS.disabledBg,
     borderColor: COLORS.disabledBorder,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
     color: COLORS.disabledText,
   },
-
   textArea: {
     height: 110,
     textAlignVertical: 'top',
   },
-
-  pickerWrapper: {
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    borderRadius: 10,
-    overflow: 'hidden',
-    backgroundColor: COLORS.surface,
-  },
-
-  pickerWrapperReadOnly: {
-    backgroundColor: COLORS.disabledBg,
-    borderColor: COLORS.disabledBorder,
-  },
-
   error: {
     marginTop: 4,
     fontSize: 12,
     color: COLORS.error,
   },
-
-  submitButton: {
-    marginTop: 10,
-    backgroundColor: COLORS.primary,
-    paddingVertical: 14,
-    borderRadius: 12,
-    alignItems: 'center',
-  },
-
-  submitText: {
-    color: COLORS.textInverse,
-    fontSize: 16,
-    fontWeight: '600',
+  footer: {
+    margin: 20,
   },
 });

@@ -63,6 +63,8 @@ const COLORS = {
   errorBorder: '#f9cece',
 
   warning: '#e0900a',
+  warningBg: '#fff4e5',
+  warningBorder: '#fbe1b8',
 
   info: '#1a6fad',
   infoBg: '#eef5fc',
