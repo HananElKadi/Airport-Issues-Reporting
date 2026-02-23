@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: COLORS.primary,
+    color: COLORS.textInverse,
     marginBottom: 10,
   },
   message: {
@@ -50,13 +50,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.textInverse,
     paddingVertical: 10,
     paddingHorizontal: 30,
     borderRadius: 5,
   },
   buttonText: {
-    color: COLORS.textInverse,
+    color: COLORS.primary,
     fontWeight: '600',
     fontSize: 16,
   },

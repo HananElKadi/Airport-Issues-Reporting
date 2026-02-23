@@ -75,7 +75,6 @@ const styles = StyleSheet.create({
   },
   actionText: {
     fontSize: 50,
-    color: COLORS.textSecondary,
-    fontWeight: 'bold',
+    color: COLORS.textInverse,
   },
 });

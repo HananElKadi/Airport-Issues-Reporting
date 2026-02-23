@@ -127,7 +127,7 @@ const ImageModal = ({
 };
 export default ImageModal;
 const styles = StyleSheet.create({
-  modalContainer: { flex: 1, backgroundColor: COLORS.background },
+  modalContainer: { flex: 1, backgroundColor: COLORS.disabledText },
   closeButton: {
     position: 'absolute',
     top: 50,

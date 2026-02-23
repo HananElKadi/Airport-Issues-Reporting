@@ -11,7 +11,7 @@ const Stack = createNativeStackNavigator();
 
 const MenuButton = ({ onPress }) => (
   <TouchableOpacity onPress={onPress} style={{ marginLeft: 16 }}>
-    <Text style={{ fontSize: 26, color: COLORS.accent }}>☰</Text>
+    <Text style={{ fontSize: 26, color: COLORS.textInverse }}>☰</Text>
   </TouchableOpacity>
 );
 
@@ -22,7 +22,7 @@ const IssueStack = () => {
         name="Issues"
         component={IssuesFeedScreen}
         options={({ navigation }) => ({
-          title: 'Report Issues',
+          title: 'REPORT ISSUES',
           headerLeft: () => (
             <MenuButton
               onPress={() => {
@@ -35,12 +35,12 @@ const IssueStack = () => {
       <Stack.Screen
         name="CreateIssue"
         component={CreateIssueScreen}
-        options={{ title: 'New Issue' }}
+        options={{ title: 'NEW ISSUE' }}
       />
       <Stack.Screen
         name="DetailsForm"
         component={IssueDetailsFormScreen}
-        options={{ title: 'Additional Info' }}
+        options={{ title: 'ISSUE DETAILS' }}
       />
     </Stack.Navigator>
   );

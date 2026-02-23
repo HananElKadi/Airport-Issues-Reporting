@@ -6,12 +6,12 @@ const headerOptions = {
   },
   headerTintColor: COLORS.textInverse,
   headerTitleStyle: {
-    fontWeight: '600',
-    fontSize: 18,
+    fontSize: 19,
   },
   headerTitleAlign: 'center',
   headerBackTitleVisible: false,
   headerShadowVisible: false,
+  contentStyle: { backgroundColor: COLORS.background },
 };
 
 export default headerOptions;

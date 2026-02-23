@@ -4,35 +4,41 @@ import COLORS from '../../utils/constants';
 
 const IssueCard = props => {
   return (
-    <Card>
+    <Card style={styles.card}>
       <View style={styles.topRow}>
-        <Text style={styles.title}>{props.item.title}</Text>
-        <Text style={styles.status}>{props.item.status}</Text>
-      </View>
-
-      <View style={styles.bottomGrid}>
-        <View style={styles.column}>
-          <Text style={styles.label}>
-            Category: <Text style={styles.value}>{props.item.category}</Text>
-          </Text>
-        </View>
-        <View style={styles.column}>
-          <Text style={styles.label}>
-            Reported: <Text style={styles.value}>{props.item.reported}</Text>
-          </Text>
+        <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
+          {props.item.title}
+        </Text>
+        <View style={styles.statusWrapper}>
+          <Text style={styles.status}>{props.item.status}</Text>
         </View>
       </View>
 
-      <View style={styles.bottomGrid}>
-        <View style={styles.column}>
-          <Text style={styles.label}>
-            Location: <Text style={styles.value}>{props.item.location}</Text>
-          </Text>
+      <View style={styles.body}>
+        <View style={styles.row}>
+          <View style={styles.cell}>
+            <Text style={styles.label}>
+              Category <Text style={styles.value}>{props.item.category}</Text>
+            </Text>
+          </View>
+          <View style={styles.cell}>
+            <Text style={styles.label}>
+              Reported <Text style={styles.value}>{props.item.reported}</Text>
+            </Text>
+          </View>
         </View>
-        <View style={styles.column}>
-          <Text style={styles.label}>
-            Updated: <Text style={styles.value}>{props.item.updated}</Text>
-          </Text>
+
+        <View style={styles.row}>
+          <View style={styles.cell}>
+            <Text style={styles.label}>
+              Location <Text style={styles.value}>{props.item.location}</Text>
+            </Text>
+          </View>
+          <View style={styles.cell}>
+            <Text style={styles.label}>
+              Updated <Text style={styles.value}>{props.item.updated}</Text>
+            </Text>
+          </View>
         </View>
       </View>
     </Card>
@@ -44,42 +50,63 @@ export default IssueCard;
 const styles = StyleSheet.create({
   topRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 4,
-    backgroundColor: COLORS.primary400,
-    padding: 4,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    alignItems: 'stretch',
+    backgroundColor: COLORS.secondary600,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    minHeight: 30,
   },
   title: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    flex: 1,
+    fontSize: 15,
+    fontWeight: '600',
     color: COLORS.textInverse,
-    padding: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+  },
+  statusWrapper: {
+    alignSelf: 'stretch',
+    justifyContent: 'center',
+    backgroundColor: COLORS.accent200,
+    paddingHorizontal: 15,
+    borderTopRightRadius: 8,
   },
   status: {
-    fontSize: 14,
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 0.6,
     color: COLORS.textInverse,
-    paddingRight: 4,
   },
-  bottomGrid: {
+
+  body: {
+    backgroundColor: COLORS.white,
+    paddingVertical: 6,
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
+    overflow: 'hidden',
+  },
+  row: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 4,
-    padding: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 5,
   },
-  column: {
+  cell: {
     flex: 1,
+    paddingHorizontal: 4,
+    overflow: 'hidden',
   },
   label: {
     fontSize: 16,
-    paddingHorizontal: 10,
-    color: COLORS.textSecondary,
+    fontWeight: '700',
+    color: COLORS.textPrimary,
+    flexWrap: 'wrap',
   },
   value: {
-    fontSize: 14,
+    fontSize: 15,
+    color: COLORS.textSecondary,
+    letterSpacing: 0.8,
     fontWeight: '500',
-    color: COLORS.textPrimary,
+    flexWrap: 'wrap',
+    paddingLeft: 5,
   },
 });

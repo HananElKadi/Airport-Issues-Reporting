@@ -9,8 +9,9 @@ export default function Card(props) {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: COLORS.surface,
-    borderRadius: 14,
-    margin: 10,
+    borderRadius: 8,
+    marginHorizontal: 15,
+    marginVertical: 8,
 
     // iOS shadow
     shadowColor: COLORS.shadowColor,
@@ -20,9 +21,5 @@ const styles = StyleSheet.create({
 
     // Android shadow
     elevation: 4,
-
-    // Optional border for structure
-    borderWidth: 1,
-    borderColor: COLORS.borderStrong,
   },
 });

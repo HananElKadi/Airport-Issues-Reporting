@@ -7,7 +7,9 @@ const LoadingSpinner = ({ visible, message }) => {
     <Modal transparent={true} animationType="fade" visible={visible}>
       <View style={styles.overlay}>
         <View>
-          <ActivityIndicator size="large" color={COLORS.textLink} />
+          <ActivityIndicator size="large" color={COLORS.textInverse
+            
+          } />
           {message && <Text style={styles.message}>{message}</Text>}
         </View>
       </View>
@@ -25,7 +27,7 @@ const styles = StyleSheet.create({
   message: {
     marginTop: 15,
     fontSize: 16,
-    color: COLORS.textLink,
+    color: COLORS.textInverse,
     fontWeight: '500',
     textAlign: 'center',
   },

@@ -1,4 +1,3 @@
-// import { SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import IssueDrawer from './src/navigation/IssueDrawer';
 import { useEffect } from 'react';
@@ -12,6 +11,7 @@ const dummyIssues = [
       'The boarding pass scanner at Gate A12 fails intermittently and delays passenger boarding.',
     category: 'Electrical',
     status: 'Open',
+    type: 'private',
     images: [
       'https://via.placeholder.com/150',
       'https://via.placeholder.com/150',
@@ -27,6 +27,7 @@ const dummyIssues = [
       'Continuous water leakage from a pipe near the public restrooms causing a slippery floor.',
     category: 'Plumbing',
     status: 'In-Progress',
+    type: 'private',
     images: ['https://via.placeholder.com/150'],
     location: 'Terminal 2, Public Restrooms, Concourse B',
     reported: 'Security Staff',
@@ -39,6 +40,8 @@ const dummyIssues = [
       'Several floor tiles are cracked near the arrival exit, posing a tripping hazard.',
     category: 'Structural',
     status: 'Resolved',
+    type: 'private',
+
     images: [
       'https://via.placeholder.com/150',
       'https://via.placeholder.com/150',
@@ -55,6 +58,8 @@ const dummyIssues = [
       'Overhead lights are flickering intermittently, reducing visibility during security screening.',
     category: 'Electrical',
     status: 'Open',
+    type: 'private',
+
     images: [
       'https://via.placeholder.com/150',
       'https://via.placeholder.com/150',
@@ -70,6 +75,8 @@ const dummyIssues = [
       'Trash bins have not been emptied and are overflowing, causing hygiene concerns.',
     category: 'Janitorial',
     status: 'In-Progress',
+    type: 'private',
+
     images: [
       'https://via.placeholder.com/150',
       'https://via.placeholder.com/150',
@@ -85,6 +92,8 @@ const dummyIssues = [
       'The digital display above baggage carousel 5 is blank and not showing flight numbers.',
     category: 'IT',
     status: 'Open',
+    type: 'private',
+
     images: ['https://via.placeholder.com/150'],
     location: 'Terminal 1, Baggage Claim, Carousel 5',
     reported: 'Ground Operations Staff',
@@ -97,6 +106,8 @@ const dummyIssues = [
       'The handrail on the escalator feels loose and may pose a safety risk to passengers.',
     category: 'Safety',
     status: 'Resolved',
+    type: 'private',
+
     images: [
       'https://via.placeholder.com/150',
       'https://via.placeholder.com/150',
@@ -107,19 +118,21 @@ const dummyIssues = [
   },
 ];
 
+// const dummyIssues = [];
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setIssue(dummyIssues));
+    async function put() {
+      await dispatch(setIssue(dummyIssues));
+    }
+    put();
   }, [dispatch]);
 
   return (
-    // <SafeAreaView style={{ flex: 1, backgroundColor: 'red' }}>
     <NavigationContainer>
       <IssueDrawer />
     </NavigationContainer>
-    // </SafeAreaView>
   );
 }
 export default App;

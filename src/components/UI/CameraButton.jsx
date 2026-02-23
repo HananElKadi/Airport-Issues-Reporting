@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 40,
     borderWidth: 4,
-    borderColor: COLORS.surface,
+    borderColor: COLORS.white,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: COLORS.hoverBg,
@@ -37,6 +37,6 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: COLORS.surface,
+    backgroundColor: COLORS.white,
   },
 });

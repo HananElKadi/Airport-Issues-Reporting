@@ -21,8 +21,6 @@ const SearchBar = ({ placeholder = 'Search...', onSearch, onClose }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.icon}>⌕</Text>
-
       <TextInput
         style={styles.input}
         value={query}
@@ -32,11 +30,12 @@ const SearchBar = ({ placeholder = 'Search...', onSearch, onClose }) => {
         returnKeyType="search"
       />
 
-      {query.length > 0 && (
+      {/* {query.length > 0 && (
         <TouchableOpacity onPress={handleClear} style={styles.clearButton}>
           <Text style={styles.clearIcon}>✕</Text>
         </TouchableOpacity>
-      )}
+      )} */}
+      <Text style={styles.icon}>⌕</Text>
     </View>
   );
 };
@@ -48,18 +47,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.surfaceRaised,
-    borderRadius: 12,
+    borderRadius: 30,
     paddingHorizontal: 12,
-    paddingVertical: 8,
+    // paddingVertical: 5,
     marginHorizontal: 16,
     marginVertical: 10,
     borderWidth: 1,
     borderColor: COLORS.borderLight,
   },
   icon: {
-    fontSize: 25,
-    marginRight: 8,
-    color: COLORS.textTertiary,
+    fontSize: 40,
+    marginHorizontal: 8,
+    color: COLORS.primary,
+    transform: [{ rotate: '295deg' }],
   },
   input: {
     flex: 1,

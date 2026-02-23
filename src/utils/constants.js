@@ -4,7 +4,7 @@ const COLORS = {
   primary100: '#d6e4f0',
   primary200: '#a8c8e2',
   primary300: '#72a8cf',
-  primary400: '#4585b8',
+  primary400: '#5489b5',
   primary500: '#1a3a5c',
   primary600: '#15304e',
   primary700: '#10253f',
@@ -18,41 +18,41 @@ const COLORS = {
   secondary300: '#87b6d5',
   secondary400: '#4d7fa0',
   secondary500: '#3d6a88',
-  secondary600: '#2f5570',
+  secondary600: '#5392be',
   secondary700: '#234058',
   secondary800: '#172c40',
-  secondary900: '#0c1926',
+  secondary900: '#031930',
 
   accent: '#3b9ddd',
   accent50: '#edf7fd',
   accent100: '#c8eaf9',
-  accent200: '#8dd2f2',
+  accent200: '#aedef459',
   accent300: '#3b9ddd',
   accent400: '#2a82be',
   accent500: '#1b669f',
   accentContrast: '#ffffff',
 
-  background: '#eef1f6', // app background
-  backgroundAlt: '#e2e7ef', // subtle section contrast
-  backgroundSunken: '#d4dae5', // inset / well areas
-  surface: '#ffffff', // cards, modals, sheets
-  surfaceRaised: '#f8fafc', // slightly elevated surfaces
-  surfaceOverlay: '#f0f4f9', // hover / selected state bg
-  backdrop: 'rgba(10, 25, 50, 0.45)', // modal scrim
+  background: '#1a3a5c',
+  backgroundAlt: '#2d5075',
+  backgroundSunken: '#84a7c8',
+  surface: '#182b40',
+  surfaceRaised: '#f8fafc',
+  surfaceOverlay: '#f0f4f9',
+  backdrop: 'rgba(10, 25, 50, 0.45)',
 
-  textPrimary: '#0e2440', // headings, body
-  textSecondary: '#4f6880', // labels, captions
-  textTertiary: '#8fa3b5', // placeholders, hints
-  textDisabled: '#b8c7d4', // disabled state
-  textInverse: '#ffffff', // text on dark backgrounds
-  textLink: '#1a6fad', // hyperlinks
-  textLinkHover: '#1255895', // hovered link
+  textPrimary: '#243955',
+  textSecondary: '#616c76',
+  textTertiary: '#8fa3b5',
+  textDisabled: '#b8c7d4',
+  textInverse: '#ffffff',
+  textLink: '#1a6fad',
+  textLinkHover: '#1255895',
 
-  border: '#cdd5df', // default border
-  borderLight: '#e4eaf1', // subtle divider
-  borderStrong: '#a0b2c4', // emphasized border
-  borderFocus: '#3b9ddd', // focused input ring
-  divider: '#dde3eb', // <hr>, list separators
+  border: '#cdd5df',
+  borderLight: '#e4eaf1',
+  borderStrong: '#a0b2c4',
+  borderFocus: '#3b9ddd',
+  divider: '#dde3eb',
 
   success: '#1e9e6b',
   successBg: '#edfaf4',
@@ -76,7 +76,7 @@ const COLORS = {
   focusRing: 'rgba(59, 157, 221, 0.35)',
   selectedBg: 'rgba(59, 157, 221, 0.12)',
   disabledBg: '#ffffff',
-  disabledText: '#b8c7d4',
+  disabledText: '#abafb3',
   disabledBorder: '#dde3eb',
 
   shadowColor: 'rgba(10, 25, 50, 0.10)',

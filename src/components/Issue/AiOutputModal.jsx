@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     width: '90%',
-    backgroundColor: COLORS.background,
+    backgroundColor: COLORS.backgroundAlt,
     borderRadius: 16,
     padding: 20,
     elevation: 6,
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'center',
     marginBottom: 16,
-    color: COLORS.textPrimary,
+    color: COLORS.accent100,
   },
   field: {
     marginBottom: 12,
@@ -169,12 +169,12 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 13,
     fontWeight: '500',
-    color: COLORS.textSecondary,
+    color: COLORS.textTertiary,
     marginBottom: 4,
   },
   value: {
     fontSize: 15,
-    color: COLORS.textPrimary,
+    color: COLORS.textInverse,
     lineHeight: 20,
   },
   actions: {
@@ -185,10 +185,12 @@ const styles = StyleSheet.create({
   rejectBtn: {
     flex: 1,
     marginRight: 8,
+    backgroundColor: COLORS.surface,
   },
   acceptBtn: {
     flex: 1,
     marginLeft: 8,
+    backgroundColor: COLORS.surface,
   },
 });
 

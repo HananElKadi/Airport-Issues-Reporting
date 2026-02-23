@@ -66,22 +66,26 @@ const IssueDetailsFormScreen = props => {
         <ScrollView style={styles.container}>
           <View style={styles.field}>
             <Text style={styles.label}>Title</Text>
-            <TextInput
-              style={[styles.input, readOnly && styles.inputReadOnly]}
-              onChangeText={handleChange('title')}
-              onBlur={handleBlur('title')}
-              value={values.title}
-              placeholder="Enter title"
-              placeholderTextColor={COLORS.placeholder}
-              editable={!readOnly}
-            />
+            <View style={styles.valueRow}>
+              <TextInput
+                style={[styles.input, readOnly && styles.inputReadOnly]}
+                onChangeText={handleChange('title')}
+                onBlur={handleBlur('title')}
+                value={values.title}
+                placeholder="Enter title"
+                placeholderTextColor={COLORS.accent200}
+                editable={!readOnly}
+              />
+            </View>
+
             {errors.title && touched.title && !readOnly && (
               <Text style={styles.error}>{errors.title}</Text>
             )}
           </View>
 
-          <View style={styles.field}>
+          <View style={styles.fieldVertical}>
             <Text style={styles.label}>Photos</Text>
+
             <ImageSlider
               images={values.images}
               readOnly={readOnly}
@@ -95,26 +99,31 @@ const IssueDetailsFormScreen = props => {
 
           <View style={styles.field}>
             <Text style={styles.label}>Status</Text>
-            <CustomDropDown
-              list={STATUS}
-              value={values.status}
-              onChange={value => setFieldValue('status', value)}
-              placeholder="Select status"
-              readOnly={false}
-            />
+            <View style={styles.valueRow}>
+              <CustomDropDown
+                list={STATUS}
+                value={values.status}
+                onChange={value => setFieldValue('status', value)}
+                placeholder="Select status"
+                readOnly={false}
+              />
+            </View>
             {errors.status && touched.status && (
               <Text style={styles.error}>{errors.status}</Text>
             )}
           </View>
           <View style={styles.field}>
             <Text style={styles.label}>Type</Text>
-            <CustomDropDown
-              list={TYPES}
-              value={values.type}
-              onChange={value => setFieldValue('type', value)}
-              placeholder="Select type"
-              readOnly={false}
-            />
+            <View style={styles.valueRow}>
+              <CustomDropDown
+                list={TYPES}
+                value={values.type}
+                onChange={value => setFieldValue('type', value)}
+                placeholder="Select type"
+                readOnly={false}
+              />
+            </View>
+
             {errors.type && touched.type && (
               <Text style={styles.error}>{errors.type}</Text>
             )}
@@ -122,20 +131,23 @@ const IssueDetailsFormScreen = props => {
 
           <View style={styles.field}>
             <Text style={styles.label}>Description</Text>
-            <TextInput
-              style={[
-                styles.input,
-                styles.textArea,
-                readOnly && styles.inputReadOnly,
-              ]}
-              onChangeText={handleChange('description')}
-              onBlur={handleBlur('description')}
-              value={values.description}
-              placeholder="Describe the issue"
-              placeholderTextColor={COLORS.placeholder}
-              multiline
-              editable={!readOnly}
-            />
+            <View style={styles.valueRow}>
+              <TextInput
+                style={[
+                  styles.input,
+                  styles.textArea,
+                  readOnly && styles.inputReadOnly,
+                ]}
+                onChangeText={handleChange('description')}
+                onBlur={handleBlur('description')}
+                value={values.description}
+                placeholder="Describe the issue"
+                placeholderTextColor={COLORS.accent200}
+                multiline
+                editable={!readOnly}
+              />
+            </View>
+
             {errors.description && touched.description && !readOnly && (
               <Text style={styles.error}>{errors.description}</Text>
             )}
@@ -143,13 +155,16 @@ const IssueDetailsFormScreen = props => {
 
           <View style={styles.field}>
             <Text style={styles.label}>Category</Text>
-            <CustomDropDown
-              list={CATEGORIES}
-              value={values.category}
-              onChange={value => setFieldValue('category', value)}
-              placeholder="Select category"
-              readOnly={readOnly}
-            />
+            <View style={styles.valueRow}>
+              <CustomDropDown
+                list={CATEGORIES}
+                value={values.category}
+                onChange={value => setFieldValue('category', value)}
+                placeholder="Select category"
+                readOnly={readOnly}
+              />
+            </View>
+
             {errors.category && touched.category && (
               <Text style={styles.error}>{errors.category}</Text>
             )}
@@ -157,13 +172,16 @@ const IssueDetailsFormScreen = props => {
 
           <View style={styles.field}>
             <Text style={styles.label}>Location</Text>
-            <CustomDropDown
-              list={LOCATIONS}
-              value={values.location}
-              onChange={value => setFieldValue('location', value)}
-              placeholder="Select location"
-              readOnly={readOnly}
-            />
+            <View style={styles.valueRow}>
+              <CustomDropDown
+                list={LOCATIONS}
+                value={values.location}
+                onChange={value => setFieldValue('location', value)}
+                placeholder="Select location"
+                readOnly={readOnly}
+              />
+            </View>
+
             {errors.location && touched.location && (
               <Text style={styles.error}>{errors.location}</Text>
             )}
@@ -171,15 +189,18 @@ const IssueDetailsFormScreen = props => {
 
           <View style={styles.field}>
             <Text style={styles.label}>Reported By</Text>
-            <TextInput
-              style={[styles.input, readOnly && styles.inputReadOnly]}
-              onChangeText={handleChange('reported')}
-              onBlur={handleBlur('reported')}
-              value={values.reported}
-              placeholder="Reporter name"
-              placeholderTextColor={COLORS.placeholder}
-              editable={!readOnly}
-            />
+            <View style={styles.valueRow}>
+              <TextInput
+                style={[styles.input, readOnly && styles.inputReadOnly]}
+                onChangeText={handleChange('reported')}
+                onBlur={handleBlur('reported')}
+                value={values.reported}
+                placeholder="Reporter name"
+                placeholderTextColor={COLORS.accent200}
+                editable={!readOnly}
+              />
+            </View>
+
             {errors.reported && touched.reported && (
               <Text style={styles.error}>{errors.reported}</Text>
             )}
@@ -198,34 +219,48 @@ export default IssueDetailsFormScreen;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: 0,
     flex: 1,
+    backgroundColor: COLORS.backgroundAlt,
   },
   field: {
-    marginBottom: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomWidth: 0.5,
+    borderBottomColor: COLORS.hoverBg,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+  },
+  fieldVertical: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    borderBottomWidth: 0.5,
+    borderBottomColor: COLORS.hoverBg,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
   },
   label: {
-    fontSize: 15,
-    color: COLORS.textSecondary,
-    marginBottom: 6,
+    fontSize: 18,
+    color: COLORS.textInverse,
+    width: 120,
+    fontWeight: '400',
   },
+  valueRow: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
   input: {
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    borderRadius: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    backgroundColor: COLORS.surface,
+    flex: 1,
     fontSize: 15,
-    color: COLORS.textPrimary,
+    color: COLORS.primary100,
+    padding: 0,
   },
   inputReadOnly: {
-    backgroundColor: COLORS.disabledBg,
-    borderColor: COLORS.disabledBorder,
     color: COLORS.disabledText,
   },
   textArea: {
-    height: 110,
     textAlignVertical: 'top',
   },
   error: {
@@ -234,6 +269,6 @@ const styles = StyleSheet.create({
     color: COLORS.error,
   },
   footer: {
-    margin: 20,
+    margin: 10,
   },
 });

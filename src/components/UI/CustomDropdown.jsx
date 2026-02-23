@@ -77,12 +77,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    borderRadius: 10,
+    // borderWidth: 1,
+    // borderColor: COLORS.border,
+    // borderRadius: 10,
     paddingHorizontal: 14,
     paddingVertical: 12,
-    backgroundColor: COLORS.surface,
+    backgroundColor: COLORS.transparent,
   },
   triggerOpen: {
     borderBottomLeftRadius: 0,
@@ -90,17 +90,17 @@ const styles = StyleSheet.create({
     borderBottomColor: 'transparent',
   },
   triggerDisabled: {
-    backgroundColor: COLORS.disabledBg,
-    borderColor: COLORS.disabledBorder,
+    backgroundColor: COLORS.transparent,
+    // borderColor: COLORS.disabledBorder,
     color: COLORS.disabledText,
   },
   triggerText: {
     fontSize: 15,
-    color: COLORS.textPrimary,
+    color: COLORS.textInverse,
     flex: 1,
   },
   placeholder: {
-    color: COLORS.placeholder,
+    color: COLORS.accent200,
   },
   arrow: {
     fontSize: 18,
@@ -111,12 +111,12 @@ const styles = StyleSheet.create({
     transform: [{ rotate: '180deg' }],
   },
   dropdownContainer: {
-    borderWidth: 1,
-    borderTopWidth: 0,
-    borderColor: COLORS.border,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-    backgroundColor: COLORS.surface,
+    // borderWidth: 1,
+    // borderTopWidth: 0,
+    // borderColor: COLORS.border,
+    // borderBottomLeftRadius: 10,
+    // borderBottomRightRadius: 10,
+    backgroundColor: COLORS.transparent,
     overflow: 'hidden',
   },
   option: {
@@ -126,20 +126,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 14,
   },
-  optionSelected: {
-    backgroundColor: COLORS.primaryLight,
-  },
+  // optionSelected: {
+  //   color: COLORS.secondary400,
+  // },
   optionText: {
     fontSize: 15,
-    color: COLORS.textPrimary,
+    color: COLORS.textInverse,
   },
   optionTextSelected: {
-    color: COLORS.primary,
+    color: COLORS.secondary400,
     fontWeight: '600',
   },
   checkmark: {
     fontSize: 16,
-    color: COLORS.primary,
+    color: COLORS.secondary400,
   },
   separator: {
     height: 1,

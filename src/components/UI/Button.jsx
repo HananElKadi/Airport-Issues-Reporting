@@ -31,30 +31,33 @@ export default function Button({
 }
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.backgroundSunken,
     paddingVertical: 14,
-    borderRadius: 14,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
+    marginHorizontal: 16,
+    marginVertical: 15,
 
     // iOS shadow
-    shadowColor: COLORS.primary,
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.25,
-    shadowRadius: 6,
+    shadowColor: COLORS.accent,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 8,
 
     // Android shadow
-    elevation: 4,
+    elevation: 6,
   },
 
   text: {
-    color: COLORS.textInverse,
-    fontSize: 16,
-    fontWeight: '600',
+    color: COLORS.white,
+    fontSize: 18,
+    fontWeight: '700',
+    letterSpacing: 0.5,
   },
 
   disabled: {
-    backgroundColor: COLORS.backgroundSunken,
+    backgroundColor: COLORS.accent200,
     elevation: 0,
     shadowOpacity: 0,
   },

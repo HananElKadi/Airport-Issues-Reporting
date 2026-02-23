@@ -42,14 +42,14 @@ export default function DrawerContent(props) {
         onPress={() => toggle(setSelectedStatus, 'status', s)}
         style={[
           styles.statusChip,
-          { backgroundColor: active ? COLORS.primary : COLORS.surface },
+          { backgroundColor: active ? COLORS.focusRing : COLORS.secondary900 },
         ]}
         activeOpacity={0.75}
       >
         <Text
           style={[
             styles.statusText,
-            { color: active ? COLORS.textInverse : COLORS.textSecondary },
+            { color: active ? COLORS.textInverse : COLORS.textInverse },
           ]}
         >
           {s}
@@ -171,7 +171,6 @@ const styles = StyleSheet.create({
     paddingTop: 52,
     paddingHorizontal: 20,
     paddingBottom: 18,
-    backgroundColor: COLORS.primary,
   },
   headerLeft: {},
   headerTitle: {
@@ -223,22 +222,19 @@ const styles = StyleSheet.create({
 
   categoryCard: {
     width: '30.5%',
-    backgroundColor: COLORS.surface,
-    borderWidth: 1,
-    borderColor: COLORS.border,
+    backgroundColor: COLORS.secondary900,
     borderRadius: 10,
     paddingVertical: 12,
     paddingHorizontal: 10,
     alignItems: 'center',
   },
   categoryCardActive: {
-    backgroundColor: COLORS.primary,
-    borderColor: COLORS.primary,
+    backgroundColor: COLORS.focusRing,
   },
   categoryLabel: {
     fontSize: 12,
     fontWeight: '500',
-    color: COLORS.textSecondary,
+    color: COLORS.textInverse,
     textAlign: 'center',
   },
   categoryLabelActive: {
@@ -251,21 +247,18 @@ const styles = StyleSheet.create({
   },
   locationCard: {
     width: '100%',
-    backgroundColor: COLORS.surface,
-    borderWidth: 1,
-    borderColor: COLORS.border,
+    backgroundColor: COLORS.secondary900,
     borderRadius: 10,
     paddingVertical: 12,
     paddingHorizontal: 14,
   },
   locationCardActive: {
-    backgroundColor: COLORS.primary,
-    borderColor: COLORS.primary,
+    backgroundColor: COLORS.focusRing,
   },
   locationLabel: {
     fontSize: 13,
     fontWeight: '500',
-    color: COLORS.textSecondary,
+    color: COLORS.textInverse,
   },
   locationLabelActive: {
     color: COLORS.textInverse,
