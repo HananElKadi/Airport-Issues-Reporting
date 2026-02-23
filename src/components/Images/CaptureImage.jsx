@@ -31,6 +31,8 @@ const CaptureImage = ({ isFocused, camera }) => {
       device={device}
       isActive={isFocused}
       photo={true}
+      orientation="portrait"
+      photoResolution="medium "
     />
   );
 };

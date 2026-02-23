@@ -7,6 +7,7 @@ import ThubnailStack from '../../components/Images/ThubnailStack';
 import ImagePicker from '../../components/Images/ImagePicker';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import AiOutputModal from '../../components/Issue/AiOutputModal';
+import resizeImage from '../../services/resizeImage';
 import COLORS from '../../utils/constants';
 const CreateIssueScreen = () => {
   const isFocused = useIsFocused();
@@ -40,7 +41,7 @@ const CreateIssueScreen = () => {
   const onImageEdited = (index, newImagePath) => {
     setCapturedPhotos(prev => {
       const updated = [...prev];
-      updated[index] = newImagePath; // Replace original with edited screenshot
+      updated[index] = newImagePath;
       return updated;
     });
     console.log('Image replaced with screenshot:', newImagePath);
@@ -52,10 +53,14 @@ const CreateIssueScreen = () => {
     try {
       if (!camera.current) return;
 
-      const photo = await camera.current.takePhoto();
+      const photo = await camera.current.takePhoto({
+        flash: 'off',
+        qualityPrioritization: 'balanced',
+      });
 
       if (!photo?.path) return;
-      setCapturedPhotos(prev => [...prev, `file://${photo.path}`]);
+      const compressed = await resizeImage(photo.path);
+      setCapturedPhotos(prev => [...prev, `file://${compressed.path}`]);
       console.log(capturedPhotos);
     } catch (error) {
       console.error('Error capturing photo:', error);
