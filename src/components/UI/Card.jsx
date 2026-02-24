@@ -12,14 +12,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginHorizontal: 15,
     marginVertical: 8,
-
-    // iOS shadow
     shadowColor: COLORS.shadowColor,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.15,
     shadowRadius: 6,
-
-    // Android shadow
     elevation: 4,
   },
 });

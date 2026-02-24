@@ -10,7 +10,6 @@ const ThubnailStack = ({ photos, onEditChange }) => {
       style={styles.thumbnailContainer}
       onPress={() => {
         setVisible(true);
-        // console.log('yalla');
       }}
     >
       {photos.length > 0 && (

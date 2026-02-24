@@ -6,12 +6,17 @@ import LoadingSpinner from '../UI/LoadingSpinner';
 import uploadImage from '../../services/aiReasonningApi';
 import COLORS from '../../utils/constants';
 
+const DataField = ({ label, value }) => (
+  <View style={styles.field}>
+    <Text style={styles.label}>{label}</Text>
+    <Text style={styles.value}>{value}</Text>
+  </View>
+);
+
 const AiOutputModal = ({ visible, onAccept, onReject, images }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
-
-  // ===== Data Fetching Functions =====
 
   const uploadImages = async images => {
     try {
@@ -24,23 +29,6 @@ const AiOutputModal = ({ visible, onAccept, onReject, images }) => {
     }
   };
 
-  // const getDataFromAi = async () => {
-  //   try {
-  //     await new Promise(resolve => setTimeout(resolve, 1500));
-
-  //     return {
-  //       title: 'Broken Escalator',
-  //       category: 'Safety',
-  //       description:
-  //         'The escalator near Gate A3 is not working and causing congestion.',
-  //     };
-  //   } catch (err) {
-  //     throw new Error('Failed to analyze images');
-  //   }
-  // };
-
-  // ===== Effects =====
-
   useEffect(() => {
     if (!images || images.length === 0) return;
 
@@ -51,7 +39,6 @@ const AiOutputModal = ({ visible, onAccept, onReject, images }) => {
       try {
         const res = await uploadImages(images);
         setData(res);
-        console.log(res);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -61,27 +48,6 @@ const AiOutputModal = ({ visible, onAccept, onReject, images }) => {
 
     handleUpload();
   }, [images]);
-
-  // useEffect(() => {
-  //   if (!visible) return;
-
-  //   const fetchData = async () => {
-  //     setIsLoading(true);
-  //     setError(null);
-  //     setData(null);
-
-  //     // try {
-  //     //   const result = await getDataFromAi();
-  //     //   setData(result);
-  //     // } catch (err) {
-  //     //   setError(err.message);
-  //     // } finally {
-  //     //   setIsLoading(false);
-  //     // }
-  //   };
-
-  //   fetchData();
-  // }, [visible]);
 
   if (isLoading) {
     return <LoadingSpinner message="Analyzing Images..." />;
@@ -103,6 +69,7 @@ const AiOutputModal = ({ visible, onAccept, onReject, images }) => {
   if (!data) {
     return null;
   }
+
   return (
     <Modal visible={visible} transparent animationType="fade">
       <View style={styles.backdrop}>
@@ -130,13 +97,6 @@ const AiOutputModal = ({ visible, onAccept, onReject, images }) => {
     </Modal>
   );
 };
-
-const DataField = ({ label, value }) => (
-  <View style={styles.field}>
-    <Text style={styles.label}>{label}</Text>
-    <Text style={styles.value}>{value}</Text>
-  </View>
-);
 
 const styles = StyleSheet.create({
   backdrop: {

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useRef, useState } from 'react';
-import CaptureImage from '../../components/Images/CaptureImage';
-import CameraButton from '../../components/UI/CameraButton';
+import CaptureImage from '../../components/Camera/CaptureImage';
+import CameraButton from '../../components/Camera/CameraButton';
 import Button from '../../components/UI/Button';
 import ThubnailStack from '../../components/Images/ThubnailStack';
 import ImagePicker from '../../components/Images/ImagePicker';
@@ -44,7 +44,6 @@ const CreateIssueScreen = () => {
       updated[index] = newImagePath;
       return updated;
     });
-    console.log('Image replaced with screenshot:', newImagePath);
   };
 
   const [startAnalyze, setStartAnalyze] = useState(false);
@@ -61,7 +60,6 @@ const CreateIssueScreen = () => {
       if (!photo?.path) return;
       const compressed = await resizeImage(photo.path);
       setCapturedPhotos(prev => [...prev, `file://${compressed.path}`]);
-      console.log(capturedPhotos);
     } catch (error) {
       console.error('Error capturing photo:', error);
     }
@@ -74,7 +72,6 @@ const CreateIssueScreen = () => {
       images: capturedPhotos,
     }));
     setStartAnalyze(true);
-    console.log('Submitting photos:', capturedPhotos);
   };
 
   const acceptAiOutputHandler = data => {

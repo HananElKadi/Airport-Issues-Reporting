@@ -43,7 +43,6 @@ const ImageModal = ({
       }
       const screenshotUri = await currentViewShot.capture();
 
-      console.log('Screenshot captured successfully:', screenshotUri);
       if (onEditChange) {
         onEditChange(currentIndex, screenshotUri);
       }

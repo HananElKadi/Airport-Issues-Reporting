@@ -77,9 +77,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    // borderWidth: 1,
-    // borderColor: COLORS.border,
-    // borderRadius: 10,
     paddingHorizontal: 14,
     paddingVertical: 12,
     backgroundColor: COLORS.transparent,
@@ -91,7 +88,6 @@ const styles = StyleSheet.create({
   },
   triggerDisabled: {
     backgroundColor: COLORS.transparent,
-    // borderColor: COLORS.disabledBorder,
     color: COLORS.disabledText,
   },
   triggerText: {
@@ -111,11 +107,6 @@ const styles = StyleSheet.create({
     transform: [{ rotate: '180deg' }],
   },
   dropdownContainer: {
-    // borderWidth: 1,
-    // borderTopWidth: 0,
-    // borderColor: COLORS.border,
-    // borderBottomLeftRadius: 10,
-    // borderBottomRightRadius: 10,
     backgroundColor: COLORS.transparent,
     overflow: 'hidden',
   },
@@ -126,9 +117,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 14,
   },
-  // optionSelected: {
-  //   color: COLORS.secondary400,
-  // },
   optionText: {
     fontSize: 15,
     color: COLORS.textInverse,

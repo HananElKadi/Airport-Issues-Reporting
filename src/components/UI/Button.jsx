@@ -38,14 +38,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginHorizontal: 16,
     marginVertical: 15,
-
-    // iOS shadow
     shadowColor: COLORS.accent,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.4,
     shadowRadius: 8,
-
-    // Android shadow
     elevation: 6,
   },
 

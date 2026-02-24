@@ -47,9 +47,7 @@ const Canva = ({ image: imageUri, isEditing, paths = [], onNewPath }) => {
 
   const image = useImage(imageUri);
 
-  useEffect(() => {
-    console.log('Image decoded:', !!image);
-  }, [imageUri, image]);
+  useEffect(() => {}, [imageUri, image]);
 
   if (!image) {
     return <LoadingSpinner visible={true} message={'decoding image...'} />;

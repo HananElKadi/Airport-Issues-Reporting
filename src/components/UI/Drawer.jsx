@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import COLORS from '../../utils/constants';
 import { STATUS, CATEGORIES, LOCATIONS } from '../../utils/values';
+
 export default function DrawerContent(props) {
   const dispatch = useDispatch();
 
@@ -172,7 +173,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 18,
   },
-  headerLeft: {},
   headerTitle: {
     fontSize: 24,
     fontWeight: '700',

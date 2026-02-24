@@ -1,6 +1,6 @@
-import COLORS from '../utils/constants';
+import COLORS from '../../utils/constants';
 
-const headerOptions = {
+const HeaderOptions = {
   headerStyle: {
     backgroundColor: COLORS.primary,
   },
@@ -14,4 +14,4 @@ const headerOptions = {
   contentStyle: { backgroundColor: COLORS.background },
 };
 
-export default headerOptions;
+export default HeaderOptions;

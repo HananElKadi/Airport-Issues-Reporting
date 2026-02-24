@@ -11,7 +11,6 @@ const CaptureImage = ({ isFocused, camera }) => {
   const device = useCameraDevice('back');
 
   useEffect(() => {
-    console.log('render');
     if (!hasPermission) {
       requestPermission();
     }

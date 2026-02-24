@@ -1,15 +1,16 @@
 import React from 'react';
-import { View, Text, TextInput, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import COLORS from '../../utils/constants';
 import Button from '../../components/UI/Button';
 import ImageSlider from '../../components/Images/ImageSlider';
-import CustomDropDown from '../../components/UI/CustomDropdown';
 import { useDispatch } from 'react-redux';
 import { addIssue, updateIssue } from '../../store/slices/IssueSlice';
 import { useNavigation } from '@react-navigation/native';
 import { STATUS, CATEGORIES, LOCATIONS, TYPES } from '../../utils/values';
+import FieldInput from '../../components/Issue/IssueDetails/FieldInput';
+import FieldDropdown from '../../components/Issue/IssueDetails/FieldDropdown';
 
 const IssueSchema = Yup.object().shape({
   title: Yup.string().required('Title is required'),
@@ -64,24 +65,15 @@ const IssueDetailsFormScreen = props => {
         setFieldValue,
       }) => (
         <ScrollView style={styles.container}>
-          <View style={styles.field}>
-            <Text style={styles.label}>Title</Text>
-            <View style={styles.valueRow}>
-              <TextInput
-                style={[styles.input, readOnly && styles.inputReadOnly]}
-                onChangeText={handleChange('title')}
-                onBlur={handleBlur('title')}
-                value={values.title}
-                placeholder="Enter title"
-                placeholderTextColor={COLORS.accent200}
-                editable={!readOnly}
-              />
-            </View>
-
-            {errors.title && touched.title && !readOnly && (
-              <Text style={styles.error}>{errors.title}</Text>
-            )}
-          </View>
+          <FieldInput
+            label="Title"
+            error={touched.title && errors.title}
+            readOnly={readOnly}
+            onChangeText={handleChange('title')}
+            onBlur={handleBlur('title')}
+            value={values.title}
+            placeholder="Enter title"
+          />
 
           <View style={styles.fieldVertical}>
             <Text style={styles.label}>Photos</Text>
@@ -97,114 +89,69 @@ const IssueDetailsFormScreen = props => {
             />
           </View>
 
-          <View style={styles.field}>
-            <Text style={styles.label}>Status</Text>
-            <View style={styles.valueRow}>
-              <CustomDropDown
-                list={STATUS}
-                value={values.status}
-                onChange={value => setFieldValue('status', value)}
-                placeholder="Select status"
-                readOnly={false}
-              />
-            </View>
-            {errors.status && touched.status && (
-              <Text style={styles.error}>{errors.status}</Text>
-            )}
-          </View>
-          <View style={styles.field}>
-            <Text style={styles.label}>Type</Text>
-            <View style={styles.valueRow}>
-              <CustomDropDown
-                list={TYPES}
-                value={values.type}
-                onChange={value => setFieldValue('type', value)}
-                placeholder="Select type"
-                readOnly={false}
-              />
-            </View>
+          <FieldDropdown
+            label="Status"
+            error={touched.status && errors.status}
+            list={STATUS}
+            value={values.status}
+            onChange={value => setFieldValue('status', value)}
+            placeholder="Select status"
+          />
 
-            {errors.type && touched.type && (
-              <Text style={styles.error}>{errors.type}</Text>
-            )}
-          </View>
+          <FieldDropdown
+            label="Type"
+            error={touched.type && errors.type}
+            list={TYPES}
+            value={values.type}
+            onChange={value => setFieldValue('type', value)}
+            placeholder="Select type"
+          />
 
-          <View style={styles.field}>
-            <Text style={styles.label}>Description</Text>
-            <View style={styles.valueRow}>
-              <TextInput
-                style={[
-                  styles.input,
-                  styles.textArea,
-                  readOnly && styles.inputReadOnly,
-                ]}
-                onChangeText={handleChange('description')}
-                onBlur={handleBlur('description')}
-                value={values.description}
-                placeholder="Describe the issue"
-                placeholderTextColor={COLORS.accent200}
-                multiline
-                editable={!readOnly}
-              />
-            </View>
+          <FieldInput
+            label="Description"
+            error={touched.description && errors.description}
+            readOnly={readOnly}
+            onChangeText={handleChange('description')}
+            onBlur={handleBlur('description')}
+            value={values.description}
+            placeholder="Describe the issue"
+            multiline
+            style={[
+              styles.input,
+              styles.textArea,
+              readOnly && styles.inputReadOnly,
+            ]}
+          />
 
-            {errors.description && touched.description && !readOnly && (
-              <Text style={styles.error}>{errors.description}</Text>
-            )}
-          </View>
+          <FieldDropdown
+            label="Category"
+            error={touched.category && errors.category}
+            list={CATEGORIES}
+            value={values.category}
+            onChange={value => setFieldValue('category', value)}
+            placeholder="Select category"
+            readOnly={readOnly}
+          />
 
-          <View style={styles.field}>
-            <Text style={styles.label}>Category</Text>
-            <View style={styles.valueRow}>
-              <CustomDropDown
-                list={CATEGORIES}
-                value={values.category}
-                onChange={value => setFieldValue('category', value)}
-                placeholder="Select category"
-                readOnly={readOnly}
-              />
-            </View>
+          <FieldDropdown
+            label="Location"
+            error={touched.location && errors.location}
+            list={LOCATIONS}
+            value={values.location}
+            onChange={value => setFieldValue('location', value)}
+            placeholder="Select location"
+            readOnly={readOnly}
+          />
 
-            {errors.category && touched.category && (
-              <Text style={styles.error}>{errors.category}</Text>
-            )}
-          </View>
-
-          <View style={styles.field}>
-            <Text style={styles.label}>Location</Text>
-            <View style={styles.valueRow}>
-              <CustomDropDown
-                list={LOCATIONS}
-                value={values.location}
-                onChange={value => setFieldValue('location', value)}
-                placeholder="Select location"
-                readOnly={readOnly}
-              />
-            </View>
-
-            {errors.location && touched.location && (
-              <Text style={styles.error}>{errors.location}</Text>
-            )}
-          </View>
-
-          <View style={styles.field}>
-            <Text style={styles.label}>Reported By</Text>
-            <View style={styles.valueRow}>
-              <TextInput
-                style={[styles.input, readOnly && styles.inputReadOnly]}
-                onChangeText={handleChange('reported')}
-                onBlur={handleBlur('reported')}
-                value={values.reported}
-                placeholder="Reporter name"
-                placeholderTextColor={COLORS.accent200}
-                editable={!readOnly}
-              />
-            </View>
-
-            {errors.reported && touched.reported && (
-              <Text style={styles.error}>{errors.reported}</Text>
-            )}
-          </View>
+          <FieldInput
+            label="Reported By"
+            error={touched.reported && errors.reported}
+            readOnly={readOnly}
+            onChangeText={handleChange('reported')}
+            onBlur={handleBlur('reported')}
+            value={values.reported}
+            placeholder="Reporter name"
+          />
 
           {!item.id && <Button title="Submit Issue" onPress={handleSubmit} />}
           {item.id && <Button title="Update Issue" onPress={handleSubmit} />}
@@ -223,14 +170,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.backgroundAlt,
   },
-  field: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderBottomWidth: 0.5,
-    borderBottomColor: COLORS.hoverBg,
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-  },
   fieldVertical: {
     flexDirection: 'column',
     alignItems: 'flex-start',
@@ -245,11 +184,6 @@ const styles = StyleSheet.create({
     width: 120,
     fontWeight: '400',
   },
-  valueRow: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
 
   input: {
     flex: 1,
@@ -262,11 +196,6 @@ const styles = StyleSheet.create({
   },
   textArea: {
     textAlignVertical: 'top',
-  },
-  error: {
-    marginTop: 4,
-    fontSize: 12,
-    color: COLORS.error,
   },
   footer: {
     margin: 10,
