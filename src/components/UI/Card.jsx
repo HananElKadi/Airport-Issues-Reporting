@@ -8,7 +8,7 @@ export default function Card(props) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: COLORS.surface,
+    backgroundColor: COLORS.surfaceRaised,
     borderRadius: 8,
     marginHorizontal: 15,
     marginVertical: 8,

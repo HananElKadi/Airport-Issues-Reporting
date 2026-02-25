@@ -46,7 +46,7 @@ const COLORS = {
   darkOverlay: 'rgba(0, 0, 0, 0.4)',
   hoverBg: 'rgba(0, 0, 0, 0.4)',
   focusRing: 'rgba(59, 157, 221, 0.35)',
-  disabledText: '#abafb3',
+  disabledText: '#dce1e7',
 
   shadowColor: 'rgba(10, 25, 50, 0.10)',
   white: '#ffffff',

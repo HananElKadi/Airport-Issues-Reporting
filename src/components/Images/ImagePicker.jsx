@@ -1,7 +1,8 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import COLORS from '../../utils/constants';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const ImagePicker = ({ onPick, maxPhotos = 5, currentCount = 0 }) => {
   const pickFromGallery = async () => {
@@ -28,7 +29,7 @@ const ImagePicker = ({ onPick, maxPhotos = 5, currentCount = 0 }) => {
       onPress={pickFromGallery}
       disabled={currentCount >= maxPhotos}
     >
-      <Text style={styles.text}>U</Text>
+      <MaterialIcons name="upload" size={26} color={COLORS.textInverse} />
     </TouchableOpacity>
   );
 };
@@ -43,7 +44,6 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: COLORS.hoverBg,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,

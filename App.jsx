@@ -16,6 +16,7 @@ const dummyIssues = [
       'https://via.placeholder.com/150',
       'https://via.placeholder.com/150',
     ],
+    comments: [],
     location: 'Terminal 1, Gate A12, Boarding Area',
     reported: 'Ground Operations Staff',
     updated: '2026-01-27T08:55:00Z',
@@ -29,6 +30,8 @@ const dummyIssues = [
     status: 'In-Progress',
     type: 'private',
     images: ['https://via.placeholder.com/150'],
+    comments: [],
+
     location: 'Terminal 2, Public Restrooms, Concourse B',
     reported: 'Security Staff',
     updated: '2026-01-27T09:40:00Z',
@@ -47,6 +50,8 @@ const dummyIssues = [
       'https://via.placeholder.com/150',
       'https://via.placeholder.com/150',
     ],
+    comments: [],
+
     location: 'Terminal 3, Arrival Hall, Exit Zone',
     reported: 'Maintenance Staff',
     updated: '2026-01-26T16:20:00Z',
@@ -64,6 +69,8 @@ const dummyIssues = [
       'https://via.placeholder.com/150',
       'https://via.placeholder.com/150',
     ],
+    comments: [],
+
     location: 'Terminal 1, Security Checkpoint C',
     reported: 'Security Staff',
     updated: '2026-01-27T10:05:00Z',
@@ -81,6 +88,8 @@ const dummyIssues = [
       'https://via.placeholder.com/150',
       'https://via.placeholder.com/150',
     ],
+    comments: [],
+
     location: 'Terminal 2, Food Court Area',
     reported: 'Cleaning Staff',
     updated: '2026-01-27T10:30:00Z',
@@ -95,6 +104,8 @@ const dummyIssues = [
     type: 'private',
 
     images: ['https://via.placeholder.com/150'],
+    comments: [],
+
     location: 'Terminal 1, Baggage Claim, Carousel 5',
     reported: 'Ground Operations Staff',
     updated: '2026-01-27T11:00:00Z',
@@ -112,6 +123,8 @@ const dummyIssues = [
       'https://via.placeholder.com/150',
       'https://via.placeholder.com/150',
     ],
+    comments: [],
+
     location: 'Terminal 3, Departure Level, Escalator E2',
     reported: 'Maintenance Staff',
     updated: '2026-01-26T14:10:00Z',

@@ -4,7 +4,7 @@ import COLORS from '../../utils/constants';
 
 const IssueCard = props => {
   return (
-    <Card style={styles.card}>
+    <Card>
       <View style={styles.topRow}>
         <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
           {props.item.title}

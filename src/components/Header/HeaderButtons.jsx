@@ -1,44 +1,39 @@
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
 import COLORS from '../../utils/constants';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export const MenuButton = ({ onPress }) => (
   <TouchableOpacity onPress={onPress} style={styles.menuButton}>
-    <Text style={styles.menuButtonText}>☰</Text>
+    <SimpleLineIcons name="menu" size={26} color={COLORS.textInverse} />
   </TouchableOpacity>
 );
 
 export const HeaderAddButton = ({ onPress }) => (
   <TouchableOpacity onPress={onPress} style={styles.headerRightButton}>
-    <Text style={styles.headerAddButtonText}>+</Text>
+    <MaterialIcons name="add" size={26} color={COLORS.textInverse} />
   </TouchableOpacity>
 );
 
 export const HeaderSearchButton = ({ onPress }) => (
   <TouchableOpacity onPress={onPress} style={styles.headerRightButton}>
-    <Text style={styles.headerSearchButtonText}>⌕</Text>
+    <MaterialIcons name="search" size={26} color={COLORS.textInverse} />
   </TouchableOpacity>
 );
 
 export const CancelSearchButton = ({ onPress }) => (
   <TouchableOpacity onPress={onPress} style={styles.cancelSearchButton}>
-    <Text style={styles.cancelSearchButtonText}>✕</Text>
+    <MaterialIcons name="close" size={26} color={COLORS.textInverse} />
   </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({
   menuButton: {
-    marginLeft: 16,
-  },
-  menuButtonText: {
-    fontSize: 26,
-    color: COLORS.textInverse,
+    marginTop: 5,
+    marginLeft: 10,
   },
   headerRightButton: {
     marginRight: 16,
-  },
-  headerAddButtonText: {
-    fontSize: 30,
-    color: COLORS.textInverse,
   },
   headerSearchButtonText: {
     fontSize: 30,
@@ -48,17 +43,11 @@ const styles = StyleSheet.create({
   cancelSearchButton: {
     marginTop: 20,
     marginRight: 12,
-    width: 32,
-    height: 32,
+    width: 36,
+    height: 36,
     borderRadius: 16,
     backgroundColor: COLORS.hoverBg,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  cancelSearchButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: COLORS.textInverse,
-    lineHeight: 20,
   },
 });

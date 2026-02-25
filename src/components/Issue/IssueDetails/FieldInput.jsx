@@ -16,7 +16,7 @@ export default FieldInput;
 const styles = StyleSheet.create({
   input: {
     flex: 1,
-    fontSize: 15,
+    fontSize: 16,
     color: COLORS.primary100,
     padding: 0,
   },

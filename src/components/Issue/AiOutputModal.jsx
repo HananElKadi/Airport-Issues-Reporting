@@ -66,8 +66,26 @@ const AiOutputModal = ({ visible, onAccept, onReject, images }) => {
     );
   }
 
-  if (!data) {
-    return null;
+  if (
+    !error &&
+    (!data || (!data.title && !data.category && !data.description))
+  ) {
+    return (
+      <Modal visible={visible} transparent animationType="fade">
+        <View style={styles.backdrop}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.heading}>Fail in Getting Data</Text>
+            <View style={styles.actions}>
+              <Button
+                title="Continue"
+                style={styles.rejectBtn}
+                onPress={onReject}
+              />
+            </View>
+          </View>
+        </View>
+      </Modal>
+    );
   }
 
   return (

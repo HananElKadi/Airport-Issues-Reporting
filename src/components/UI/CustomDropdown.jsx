@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     color: COLORS.disabledText,
   },
   triggerText: {
-    fontSize: 15,
+    fontSize: 16,
     color: COLORS.textInverse,
     flex: 1,
   },

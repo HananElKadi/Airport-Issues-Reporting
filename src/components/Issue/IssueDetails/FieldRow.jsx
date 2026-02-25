@@ -17,13 +17,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 0.5,
     borderBottomColor: COLORS.hoverBg,
-    paddingVertical: 14,
-    paddingHorizontal: 16,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
   },
   label: {
     fontSize: 18,
     color: COLORS.textInverse,
-    width: 120,
+    width: 110,
     fontWeight: '400',
   },
   valueRow: {

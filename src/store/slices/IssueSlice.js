@@ -17,6 +17,7 @@ const issueSlice = createSlice({
           minute: '2-digit',
           hour12: true,
         }),
+        comments: [],
         ...action.payload,
       };
       state.issues.push(newIssue);
@@ -45,9 +46,21 @@ const issueSlice = createSlice({
     setIssue: (state, action) => {
       state.issues = action.payload;
     },
+    addComment: (state, action) => {
+      const { issueId, message } = action.payload;
+
+      const issue = state.issues.find(i => i.id === issueId);
+      if (!issue) return;
+
+      issue.comments.push({
+        id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        message,
+        createdAt: new Date().toISOString(),
+      });
+    },
   },
 });
 
-export const { addIssue, updateIssue, removeIssue, setIssue } =
+export const { addIssue, updateIssue, removeIssue, setIssue, addComment } =
   issueSlice.actions;
 export default issueSlice.reducer;

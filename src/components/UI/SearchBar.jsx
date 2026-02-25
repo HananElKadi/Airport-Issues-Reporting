@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, View, TextInput } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import COLORS from '../../utils/constants';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const SearchBar = ({ placeholder = 'Search...', onSearch }) => {
   const [query, setQuery] = useState('');
@@ -19,7 +20,7 @@ const SearchBar = ({ placeholder = 'Search...', onSearch }) => {
         placeholderTextColor={COLORS.textTertiary}
         returnKeyType="search"
       />
-      <Text style={styles.icon}>⌕</Text>
+      <MaterialIcons name="search" size={26} color={COLORS.primary} />
     </View>
   );
 };
@@ -33,6 +34,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.surfaceRaised,
     borderRadius: 30,
     paddingHorizontal: 12,
+    paddingVertical: 8,
     marginHorizontal: 16,
     marginVertical: 10,
     borderWidth: 1,
