@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import SearchBar from '../../components/UI/SearchBar';
 import { setFilter } from '../../store/slices/FilterSlice';
 import { useDispatch } from 'react-redux';
-const IssueSearchScreen = props => {
+const IssueSearch = props => {
   const dispatch = useDispatch();
   const onSearch = query => {
     dispatch(setFilter({ filterType: 'search', value: query }));
@@ -18,4 +18,4 @@ const IssueSearchScreen = props => {
     </>
   );
 };
-export default IssueSearchScreen;
+export default IssueSearch;

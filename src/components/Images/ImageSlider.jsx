@@ -6,7 +6,12 @@ import ImageModal from './ImageModal';
 const THUMB_WIDTH = 150;
 const THUMB_HEIGHT = 150;
 
-const ImageSlider = ({ images = [], onImageEdited, readOnly = false }) => {
+const ImageSlider = ({
+  images = [],
+  onImageEdited,
+  readOnly = false,
+  dimension,
+}) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [previewVisible, setPreviewVisible] = useState(false);
   const thumbListRef = useRef(null);
@@ -44,6 +49,9 @@ const ImageSlider = ({ images = [], onImageEdited, readOnly = false }) => {
         onEditChange={onImageEdited}
         initialIndex={activeIndex}
         readOnly={readOnly}
+        dimension={
+          dimension || images.map(() => ({ width: 1280, height: 960 }))
+        }
       />
     </>
   );

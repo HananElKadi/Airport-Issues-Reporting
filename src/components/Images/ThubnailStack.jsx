@@ -3,7 +3,7 @@ import React from 'react';
 import { useState } from 'react';
 import ImageModal from './ImageModal';
 import COLORS from '../../utils/constants';
-const ThubnailStack = ({ photos, onEditChange }) => {
+const ThubnailStack = ({ photos, onEditChange, dimension }) => {
   const [visible, setVisible] = useState(false);
   return (
     <TouchableOpacity
@@ -43,6 +43,7 @@ const ThubnailStack = ({ photos, onEditChange }) => {
       <ImageModal
         visible={visible}
         images={photos}
+        dimension={dimension}
         onEditChange={onEditChange}
         onClose={() => setVisible(false)}
       />

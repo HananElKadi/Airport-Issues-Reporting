@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { selectFilteredIssues } from '../../store/selectors/selector';
-import IssueSearchScreen from './IssueSearch';
+import IssueSearch from '../../components/Issue/IssueSearch';
 import IssueList from '../../components/Issue/IssueList';
 import { HeaderRight } from '../../components/Header/HeaderRight';
 
@@ -29,7 +29,7 @@ const IssuesFeedScreen = () => {
 
   return (
     <>
-      {showSearchBar && <IssueSearchScreen />}
+      {showSearchBar && <IssueSearch />}
       <IssueList issues={issues} />
     </>
   );

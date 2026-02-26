@@ -1,10 +1,11 @@
-import { StyleSheet, FlatList, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import React from 'react';
 import IssueCard from './IssueCard';
 import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import { useRef, useCallback, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import COLORS from '../../utils/constants';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 const IssueList = props => {
   const navigation = useNavigation();
   const swipeRefs = useRef(new Map());
@@ -19,16 +20,8 @@ const IssueList = props => {
     [openRowId],
   );
   const renderRightActions = () => (
-    <TouchableOpacity
-      style={styles.rightAction}
-      onPress={
-        () => {}
-        // navigation.navigate('DetailsForm', {
-        //   item: { ...issues.find(i => i.id === openRowId), readOnly: false },
-        // })
-      }
-    >
-      <Text style={styles.actionText}>→</Text>
+    <TouchableOpacity style={styles.rightAction} onPress={() => {}}>
+      <SimpleLineIcons name="bell" size={26} color={COLORS.textInverse} />
     </TouchableOpacity>
   );
   return (

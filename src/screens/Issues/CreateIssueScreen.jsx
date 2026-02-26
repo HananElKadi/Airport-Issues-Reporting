@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import CaptureImage from '../../components/Camera/CaptureImage';
 import CameraButton from '../../components/Camera/CameraButton';
 import Button from '../../components/UI/Button';
@@ -22,6 +22,7 @@ const CreateIssueScreen = () => {
 
   const navigation = useNavigation();
   const [capturedPhotos, setCapturedPhotos] = useState([]);
+  const [imageDimension, setImageDimension] = useState([]);
   const camera = useRef(null);
   const MIN_PHOTOS = 3;
   const MAX_PHOTOS = 5;
@@ -45,6 +46,9 @@ const CreateIssueScreen = () => {
       return updated;
     });
   };
+  useEffect(() => {
+    console.log('imageDimension updated:', imageDimension);
+  }, [imageDimension]);
 
   const [startAnalyze, setStartAnalyze] = useState(false);
 
@@ -60,6 +64,13 @@ const CreateIssueScreen = () => {
       if (!photo?.path) return;
       const compressed = await resizeImage(photo.path);
       setCapturedPhotos(prev => [...prev, `file://${compressed.path}`]);
+      setImageDimension(prev => [
+        ...prev,
+        {
+          width: compressed.width,
+          height: compressed.height,
+        },
+      ]);
     } catch (error) {
       console.error('Error capturing photo:', error);
     }
@@ -70,6 +81,7 @@ const CreateIssueScreen = () => {
     setNewItem(prev => ({
       ...prev,
       images: capturedPhotos,
+      dimension: imageDimension,
     }));
     setStartAnalyze(true);
   };
@@ -81,6 +93,7 @@ const CreateIssueScreen = () => {
       title: data.title,
       category: data.category,
       description: data.description,
+      dimension: imageDimension,
     };
 
     setNewItem(updatedItem);
@@ -90,6 +103,7 @@ const CreateIssueScreen = () => {
     const updatedItem = {
       ...newItem,
       images: capturedPhotos,
+      dimension: imageDimension,
     };
 
     setNewItem(updatedItem);
@@ -105,13 +119,18 @@ const CreateIssueScreen = () => {
         </Text>
       </View>
       <View style={styles.bottomOverlay}>
-        <ThubnailStack photos={capturedPhotos} onEditChange={onImageEdited} />
+        <ThubnailStack
+          photos={capturedPhotos}
+          dimension={imageDimension}
+          onEditChange={onImageEdited}
+        />
         <View style={styles.captureWrapper}>
           {canTakePhoto && <CameraButton onPress={takePhoto} />}
         </View>
         <ImagePicker
-          onPick={newPhotos => {
+          onPick={(newPhotos, newDimensions) => {
             setCapturedPhotos(prev => [...prev, ...newPhotos]);
+            setImageDimension(prev => [...prev, ...newDimensions]);
           }}
           maxPhotos={MAX_PHOTOS}
           currentCount={capturedPhotos.length}

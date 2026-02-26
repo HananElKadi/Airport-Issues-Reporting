@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    paddingLeft: 8,
   },
   error: {
     marginTop: 4,

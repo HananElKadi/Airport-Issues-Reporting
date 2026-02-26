@@ -62,6 +62,7 @@ const IssueDetailsFormScreen = props => {
           location: item.location || '',
           reported: item.reported || '',
           images: item.images || [],
+          dimension: item.dimension || [],
         }}
         validationSchema={IssueSchema}
         onSubmit={values => {
@@ -88,6 +89,7 @@ const IssueDetailsFormScreen = props => {
                 onBlur={handleBlur('title')}
                 value={values.title}
                 placeholder="Enter title"
+                multiline
               />
 
               <View style={styles.fieldVertical}>
@@ -101,6 +103,7 @@ const IssueDetailsFormScreen = props => {
                     updatedImages[index] = newImagePath;
                     setFieldValue('images', updatedImages);
                   }}
+                  dimension={item.dimension}
                 />
               </View>
               {readOnly && (

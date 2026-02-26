@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import COLORS from '../../utils/constants';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const CustomDropDown = ({
   list,
@@ -37,7 +38,9 @@ const CustomDropDown = ({
         >
           {value ? selectedLabel : placeholder || 'Select an option'}
         </Text>
-        <Text style={[styles.arrow, open && styles.arrowUp]}>▾</Text>
+        {!readOnly && (
+          <Text style={[styles.arrow, open && styles.arrowUp]}>▾</Text>
+        )}
       </TouchableOpacity>
 
       {open && (
@@ -56,7 +59,13 @@ const CustomDropDown = ({
                 >
                   {item}
                 </Text>
-                {item === value && <Text style={styles.checkmark}>✓</Text>}
+                {item === value && (
+                  <MaterialIcons
+                    name="done"
+                    size={16}
+                    color={COLORS.secondary400}
+                  />
+                )}
               </TouchableOpacity>
               {index < list.length - 1 && <View style={styles.separator} />}
             </View>
@@ -77,8 +86,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 14,
-    paddingVertical: 12,
+    // paddingHorizontal: 14,
+    paddingVertical: 8,
     backgroundColor: COLORS.transparent,
   },
   triggerOpen: {
@@ -124,10 +133,6 @@ const styles = StyleSheet.create({
   optionTextSelected: {
     color: COLORS.secondary400,
     fontWeight: '600',
-  },
-  checkmark: {
-    fontSize: 16,
-    color: COLORS.secondary400,
   },
   separator: {
     height: 1,

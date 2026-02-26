@@ -1,11 +1,10 @@
 import {
   StyleSheet,
   Modal,
-  Pressable,
   FlatList,
   View,
-  Text,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 import React from 'react';
 import COLORS from '../../utils/constants';
@@ -14,6 +13,8 @@ const { width, height } = Dimensions.get('window');
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useState, useRef } from 'react';
 import ViewShot from 'react-native-view-shot';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
 const ImageModal = ({
   visible,
   onClose,
@@ -21,6 +22,7 @@ const ImageModal = ({
   onEditChange,
   initialIndex = 0,
   readOnly = false,
+  dimension,
 }) => {
   const viewShotRefs = useRef({});
 
@@ -42,6 +44,7 @@ const ImageModal = ({
         return;
       }
       const screenshotUri = await currentViewShot.capture();
+      console.log(currentViewShot);
 
       if (onEditChange) {
         onEditChange(currentIndex, screenshotUri);
@@ -71,21 +74,48 @@ const ImageModal = ({
       };
     });
   };
+
+  const handleDeletePath = imageIndex => {
+    setTemporaryPaths(prev => {
+      const currentPaths = prev[imageIndex] || [];
+      if (currentPaths.length === 0) return prev;
+      return {
+        ...prev,
+        [imageIndex]: currentPaths.slice(0, -1),
+      };
+    });
+  };
+
   return (
     <Modal visible={visible} transparent animationType="fade">
       <GestureHandlerRootView style={styles.modalContainer}>
-        <Pressable style={styles.closeButton} onPress={onClose}>
-          <Text style={styles.closeIcon}>✕</Text>
-        </Pressable>
         {!readOnly && isEditing ? (
-          <Pressable style={styles.finishButton} onPress={handleFinishPress}>
-            <Text style={styles.buttonIcon}>✓</Text>
-          </Pressable>
+          <TouchableOpacity
+            style={styles.finishButton}
+            onPress={handleFinishPress}
+          >
+            <MaterialIcons name="done" size={35} color={COLORS.success} />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+            <MaterialIcons name="close" size={35} color={COLORS.primary} />
+          </TouchableOpacity>
+        )}
+        {!readOnly && isEditing ? (
+          <TouchableOpacity
+            style={styles.eraseButton}
+            onPress={() => handleDeletePath(currentIndex)}
+          >
+            <MaterialIcons name="undo" size={35} color={COLORS.primary} />
+          </TouchableOpacity>
         ) : (
           !readOnly && (
-            <Pressable style={styles.editButton} onPress={handleEditPress}>
-              <Text style={styles.buttonIcon}>🖌️</Text>
-            </Pressable>
+            <TouchableOpacity
+              style={styles.editButton}
+              onPress={handleEditPress}
+            >
+              <MaterialIcons name="draw" size={35} color={COLORS.primary} />
+            </TouchableOpacity>
           )
         )}
         <FlatList
@@ -115,6 +145,7 @@ const ImageModal = ({
                   isEditing={isEditing}
                   paths={temporaryPaths[index] || []}
                   onNewPath={newPath => handleNewPath(index, newPath)}
+                  dimension={dimension[index]}
                 />
               </ViewShot>
             </View>
@@ -135,15 +166,8 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: COLORS.hoverBg,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  closeIcon: {
-    color: COLORS.textInverse,
-    fontSize: 24,
-    fontWeight: '300',
-    lineHeight: 24,
   },
   editButton: {
     position: 'absolute',
@@ -153,11 +177,21 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: COLORS.hoverBg,
     justifyContent: 'center',
     alignItems: 'center',
   },
   finishButton: {
+    position: 'absolute',
+    top: 50,
+    right: 20,
+    zIndex: 10,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  eraseButton: {
     position: 'absolute',
     top: 50,
     left: 20,
@@ -165,15 +199,8 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: COLORS.success,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  buttonIcon: {
-    fontSize: 20,
-    color: COLORS.textInverse,
-    lineHeight: 20,
-    fontWeight: '300',
   },
   imageWrapper: {
     width,
